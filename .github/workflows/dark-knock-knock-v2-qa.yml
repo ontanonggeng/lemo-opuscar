@@ -1,0 +1,82 @@
+name: BLACKSTAR V2 — Animation QA Frames
+
+on:
+  push:
+    branches: [film/dark-knock-knock-v2-repair]
+    paths:
+      - ".github/workflows/dark-knock-knock-v2-qa.yml"
+      - "films/dark-knock-knock/scene.js"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  animation-frames:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: bash -leo pipefail {0}
+    env:
+      LEMO_ANGLE: swiftshader
+      LEMO_COLOR: bt709
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: mamba-org/setup-micromamba@v3
+        with:
+          environment-name: media
+          create-args: ffmpeg=7.1
+
+      - name: Brand kit dependencies
+        run: |
+          python3 -m pip install --quiet 'numpy<3' pillow shapely cairosvg
+          python3 brand/blackstar/bootstrap.py
+
+      - name: Chromium and Lemo core dependencies
+        run: |
+          sh plugin/skills/lemo-opuscar/scripts/setup.sh deps
+          node node_modules/playwright-core/cli.js install-deps chromium
+
+      - name: Static script syntax checks
+        run: |
+          node --check films/dark-knock-knock/scene.js
+          python3 -m py_compile films/dark-knock-knock/assemble.py
+
+      - name: Prepare complete speech timeline
+        run: python3 films/dark-knock-knock/assemble.py
+
+      - name: Render cinematic acting contact-sheet frames
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, subprocess
+          root=pathlib.Path('films/dark-knock-knock')
+          t=json.loads((root/'out/timeline.json').read_text())
+          requested={1,6,9,14,16,19,23,25,29,31}
+          times=[round((cue['start']+cue['end'])/2,2) for cue in t['lines'] if cue['id'] in requested]
+          assert len(times)==10
+          subprocess.run(['node','core/render/still.mjs',str(root),
+                          *map(str,times),'--size','720x1280',
+                          '--out',str(root/'qa-stills')], check=True)
+          print('PASS: original code-rendered 2D animation frames:',times)
+          PY
+
+      - name: Upload acting and character-staging QA stills
+        uses: actions/upload-artifact@v4
+        with:
+          name: blackstar-v2-acting-contact-frames
+          path: |
+            films/dark-knock-knock/qa-stills/*.jpg
+            films/dark-knock-knock/out/voice-qa.json
+            films/dark-knock-knock/out/timeline.json
+          if-no-files-found: error
+          retention-days: 14

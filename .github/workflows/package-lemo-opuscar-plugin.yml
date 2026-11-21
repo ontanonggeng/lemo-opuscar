@@ -1,0 +1,92 @@
+name: Package Original Lemo-Opuscar Skill and Plugin
+
+on:
+  push:
+    branches: [film/dark-knock-knock-v2-repair]
+    paths: [".github/workflows/package-lemo-opuscar-plugin.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare faithful ChatGPT adaptation from upstream plugin/ source
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,pathlib,shutil,zipfile
+          src=pathlib.Path('plugin/skills/lemo-opuscar')
+          assert (src/'SKILL.md').is_file() and (src/'scripts/setup.sh').is_file()
+          dest=pathlib.Path('dist/chatgpt')
+          skill=dest/'skill'/'lemo-opuscar'
+          plug=dest/'plugin'/'lemo-opuscar-cloud'
+          shutil.copytree(src,skill)
+          shutil.copytree(src,plug/'skills'/'lemo-opuscar')
+          # Preserve the original instructions; add only a cloud execution safety note.
+          note="""
+
+          ## ChatGPT cloud / GitHub connector environment
+
+          This distribution is sourced from the repository's original \`plugin/skills/lemo-opuscar\`, not a new animation library.
+          In chat environments without a shell or direct filesystem, do not pretend to execute \`setup.sh\` locally.
+          Read the connected user's authorized GitHub fork, edit files using its GitHub connector,
+          and run the existing renderer through GitHub Actions. Do not write to the upstream owner's repo.
+          Use the existing ElevenLabs connector when expressly requested, and persist approved audio
+          in the authorized film repo before ephemeral media URLs expire.
+          Never claim completed footage, word-accurate VO or visual QA without inspecting outputs.
+          """
+          for p in (skill/'SKILL.md',plug/'skills'/'lemo-opuscar'/'SKILL.md'):
+              p.write_text(p.read_text()+note,encoding='utf-8')
+          manifest={
+              "$schema":"https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+              "name":"lemo-opuscar-cloud","version":"1.1.0",
+              "description":"The original Lemo-Opuscar film directing skill and setup script from the connected GitHub library, adapted for cloud GitHub Actions workflows.",
+              "homepage":"https://github.com/ontanonggeng/lemo-opuscar",
+              "repository":"https://github.com/ontanonggeng/lemo-opuscar",
+              "author":{"name":"Lemomo","url":"https://github.com/lemomo-ai"},
+              "license":"MIT AND CC-BY-NC-4.0",
+              "extensions":{"com.openai":{"interface":{
+                  "displayName":"Lemo-Opuscar","shortDescription":"Code-rendered film styles",
+                  "longDescription":"Original Lemo-Opuscar film skill, including style guidance and setup script. Works with GitHub Actions via the separately authorized GitHub connector.",
+                  "developerName":"Lemomo / GitHub adaptation","category":"Productivity",
+                  "capabilities":["Interactive"],
+                  "defaultPrompt":"Use Lemo-Opuscar to direct a film in Sci-Fi Sitcom Toon. Read my authorized GitHub repo, build the scene and voices, then run GitHub Actions rendering and QA."
+              }}}
+          }
+          (plug/'plugin.json').write_text(json.dumps(manifest,indent=2)+'\n')
+          # Preserve Claude's original plugin manifest for provenance, not as the portable root manifest.
+          (plug/'references').mkdir(exist_ok=True)
+          shutil.copy2('plugin/.claude-plugin/plugin.json',plug/'references'/'original-claude-plugin.json')
+          def archive(src,out):
+              out.parent.mkdir(parents=True,exist_ok=True)
+              with zipfile.ZipFile(out,'w',zipfile.ZIP_DEFLATED) as z:
+                  for f in sorted(src.rglob('*')):
+                      if f.is_file():z.write(f, f.relative_to(src.parent).as_posix())
+              with zipfile.ZipFile(out) as z:
+                  for info in z.infolist():assert '..' not in pathlib.PurePosixPath(info.filename).parts
+                  assert any(p.endswith('/SKILL.md') for p in z.namelist())
+                  assert any(p.endswith('/scripts/setup.sh') for p in z.namelist())
+          archive(skill,dest/'lemo-opuscar-original-skill.zip')
+          archive(plug,dest/'lemo-opuscar-original-plugin.zip')
+          h=lambda x:hashlib.sha256(pathlib.Path(x).read_bytes()).hexdigest()
+          report={"source":{
+            "SKILL.md":h(src/'SKILL.md'),"scripts/setup.sh":h(src/'scripts/setup.sh'),
+            ".claude-plugin/plugin.json":h('plugin/.claude-plugin/plugin.json')},
+            "artifacts":{"skill":h(dest/'lemo-opuscar-original-skill.zip'),
+                         "plugin":h(dest/'lemo-opuscar-original-plugin.zip')}
+          }
+          (dest/'SOURCE-CHECKSUMS.json').write_text(json.dumps(report,indent=2)+'\n')
+          print(json.dumps(report,indent=2))
+          PY
+
+      - name: Upload official-source packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: lemo-opuscar-original-chatgpt-packages
+          path: dist/chatgpt/*.zip
+          retention-days: 14
+          if-no-files-found: error
