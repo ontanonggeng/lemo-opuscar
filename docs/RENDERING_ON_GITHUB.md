@@ -1,12 +1,12 @@
 # GitHub-hosted film rendering
 
-This repository includes an optional, manually triggered GitHub Actions workflow for rendering code-driven Lemo-Opuscar film projects. No automatic publishing is performed.
+This repository includes a GitHub Actions workflow for rendering code-driven Lemo-Opuscar film projects. Changes to the workflow or smoke-test files on main automatically run one smoke test; real film renders are manual. No automatic publishing is performed.
 
 ## First run
 
-1. Merge the workflow pull request into main.
-2. In Actions, open **Film render**, select **Run workflow**.
-3. Leave project_dir as **ci/render-smoke** with both optional package tiers off.
+1. Merge the workflow pull request into main. It automatically attempts the smoke test when CI files change.
+2. Check the **Actions → Film render** run. If fork workflows are disabled, enable Actions in the repository settings and then use **Run workflow**.
+3. To repeat the smoke test manually, leave project_dir as **ci/render-smoke** and both optional package tiers off.
 4. After a successful job, download **lemo-render-<run-id>** under Artifacts.
 
 The smoke test produces a three-second original 540 x 960 animation with synthetic audio. It only checks the browser renderer, FFmpeg muxer, and artifact delivery. It is not a creative film and does not use BLACKSTAR assets.
@@ -25,6 +25,6 @@ Do not commit API keys, credentials, private client assets or licensed audio. Us
 
 Custom styles (such as Inkglow Toon) and BLACKSTAR brand assets from local Windows paths are not present in a fresh GitHub checkout. They must be added or supplied as permitted assets before a film depending on them can build.
 
-This is a development and testing runner, not an unrestricted video-render farm. Review GitHub's GitHub-hosted runner usage policy and billing conditions before scaling up. Manual dispatch is intentional to prevent every source edit from consuming compute time.
+This is a development and testing runner, not an unrestricted video-render farm. Review GitHub's GitHub-hosted runner usage policy and billing conditions before scaling up. Only workflow/smoke-test file changes automatically trigger a smoke test; film builds must be manually dispatched to avoid per-edit compute charges.
 
 The existing gallery deployment workflow remains separate and unchanged.
