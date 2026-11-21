@@ -3,7 +3,9 @@ name: BLACKSTAR V2 — Animation QA Frames
 on:
   push:
     branches: [film/dark-knock-knock-v2-repair]
-    paths: [".github/workflows/dark-knock-knock-v2-qa.yml"]
+    paths:
+      - ".github/workflows/dark-knock-knock-v2-qa.yml"
+      - "films/dark-knock-knock/scene.js"
   workflow_dispatch:
 
 permissions:
