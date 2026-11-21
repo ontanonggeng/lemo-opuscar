@@ -1,0 +1,281 @@
+[
+  {
+    "id": 1,
+    "speaker": "N",
+    "sourceLine": 0,
+    "srcStart": 0.16,
+    "srcEnd": 2.72,
+    "text": "Why is the doorbell wearing a skull?",
+    "pause": 0.15
+  },
+  {
+    "id": 2,
+    "speaker": "D",
+    "sourceLine": 0,
+    "srcStart": 0.16,
+    "srcEnd": 3.88,
+    "text": "Security update. Dark humor is cheaper than a lock.",
+    "pause": 0.17
+  },
+  {
+    "id": 3,
+    "speaker": "N",
+    "sourceLine": 1,
+    "srcStart": 3.12,
+    "srcEnd": 4.8,
+    "text": "Fine. Test it.",
+    "pause": 0.17
+  },
+  {
+    "id": 4,
+    "speaker": "D",
+    "sourceLine": 1,
+    "srcStart": 4.64,
+    "srcEnd": 5.44,
+    "text": "Knock knock.",
+    "pause": 0.16
+  },
+  {
+    "id": 5,
+    "speaker": "N",
+    "sourceLine": 2,
+    "srcStart": 5.12,
+    "srcEnd": 5.88,
+    "text": "Who's there?",
+    "pause": 0.11
+  },
+  {
+    "id": 6,
+    "speaker": "D",
+    "sourceLine": 2,
+    "srcStart": 5.897,
+    "srcEnd": 6.88,
+    "text": "Your conscience.",
+    "pause": 0.1
+  },
+  {
+    "id": 7,
+    "speaker": "N",
+    "sourceLine": 3,
+    "srcStart": 6.16,
+    "srcEnd": 7.44,
+    "text": "Your conscience who?",
+    "pause": 0.1
+  },
+  {
+    "id": 8,
+    "speaker": "D",
+    "sourceLine": 3,
+    "srcStart": 7.653,
+    "srcEnd": 9.88,
+    "text": "Exactly. You haven't heard from me in years.",
+    "pause": 0.6
+  },
+  {
+    "id": 9,
+    "speaker": "N",
+    "sourceLine": 4,
+    "srcStart": 7.817,
+    "srcEnd": 9.84,
+    "text": "That's not a joke. That's a complaint.",
+    "pause": 0.2
+  },
+  {
+    "id": 10,
+    "speaker": "D",
+    "sourceLine": 4,
+    "srcStart": 10.24,
+    "srcEnd": 11,
+    "text": "Knock knock.",
+    "pause": 0.1
+  },
+  {
+    "id": 11,
+    "speaker": "N",
+    "sourceLine": 5,
+    "srcStart": 10.08,
+    "srcEnd": 10.84,
+    "text": "Who's there?",
+    "pause": 0.09
+  },
+  {
+    "id": 12,
+    "speaker": "D",
+    "sourceLine": 5,
+    "srcStart": 11.36,
+    "srcEnd": 12,
+    "text": "Rent.",
+    "pause": 0.1
+  },
+  {
+    "id": 13,
+    "speaker": "N",
+    "sourceLine": 6,
+    "srcStart": 11.12,
+    "srcEnd": 11.84,
+    "text": "Rent who?",
+    "pause": 0.12
+  },
+  {
+    "id": 14,
+    "speaker": "D",
+    "sourceLine": 6,
+    "srcStart": 12.44,
+    "srcEnd": 15.16,
+    "text": "Rent's due. We now accept years of your life.",
+    "pause": 0.35
+  },
+  {
+    "id": 15,
+    "speaker": "N",
+    "sourceLine": 7,
+    "srcStart": 12.24,
+    "srcEnd": 14.56,
+    "text": "Years of my life? That's not in the lease!",
+    "pause": 0.15
+  },
+  {
+    "id": 16,
+    "speaker": "N",
+    "sourceLine": 8,
+    "srcStart": 14.72,
+    "srcEnd": 15.72,
+    "text": "Who approved that?",
+    "pause": 0.12
+  },
+  {
+    "id": 17,
+    "speaker": "D",
+    "sourceLine": 7,
+    "srcStart": 15.573,
+    "srcEnd": 17.72,
+    "text": "You did. In the terms you skipped.",
+    "pause": 0.45
+  },
+  {
+    "id": 18,
+    "speaker": "N",
+    "sourceLine": 9,
+    "srcStart": 16.24,
+    "srcEnd": 17.36,
+    "text": "Disable jokes. Now.",
+    "pause": 0.13
+  },
+  {
+    "id": 19,
+    "speaker": "D",
+    "sourceLine": 8,
+    "srcStart": 18.08,
+    "srcEnd": 18.84,
+    "text": "Knock knock.",
+    "pause": 0.12
+  },
+  {
+    "id": 20,
+    "speaker": "N",
+    "sourceLine": 10,
+    "srcStart": 17.6,
+    "srcEnd": 18.48,
+    "text": "WHO'S THERE?",
+    "pause": 0.1
+  },
+  {
+    "id": 21,
+    "speaker": "D",
+    "sourceLine": 9,
+    "srcStart": 19.2,
+    "srcEnd": 20.04,
+    "text": "Nobody.",
+    "pause": 0.12
+  },
+  {
+    "id": 22,
+    "speaker": "N",
+    "sourceLine": 11,
+    "srcStart": 18.72,
+    "srcEnd": 19.52,
+    "text": "Nobody who?",
+    "pause": 0.1
+  },
+  {
+    "id": 23,
+    "speaker": "D",
+    "sourceLine": 10,
+    "srcStart": 20.16,
+    "srcEnd": 23,
+    "text": "Nobody lives here. I evicted you during setup.",
+    "pause": 0.42
+  },
+  {
+    "id": 24,
+    "speaker": "N",
+    "sourceLine": 12,
+    "srcStart": 19.76,
+    "srcEnd": 21.2,
+    "text": "I'm standing right here!",
+    "pause": 0.17
+  },
+  {
+    "id": 25,
+    "speaker": "N",
+    "sourceLine": 13,
+    "srcStart": 21.646,
+    "srcEnd": 23.96,
+    "text": "Wait. What's knocking inside the wall?",
+    "pause": 0.58
+  },
+  {
+    "id": 26,
+    "speaker": "D",
+    "sourceLine": 11,
+    "srcStart": 23.36,
+    "srcEnd": 25.36,
+    "text": "That would be the previous tenant.",
+    "pause": 0.4
+  },
+  {
+    "id": 27,
+    "speaker": "D",
+    "sourceLine": 12,
+    "srcStart": 25.68,
+    "srcEnd": 26.36,
+    "text": "Knock knock.",
+    "pause": 0.2
+  },
+  {
+    "id": 28,
+    "speaker": "N",
+    "sourceLine": 14,
+    "srcStart": 24.309,
+    "srcEnd": 25.04,
+    "text": "Who's there?",
+    "pause": 0.13
+  },
+  {
+    "id": 29,
+    "speaker": "D",
+    "sourceLine": 13,
+    "srcStart": 26.64,
+    "srcEnd": 28.2,
+    "text": "Your security deposit.",
+    "pause": 0.1
+  },
+  {
+    "id": 30,
+    "speaker": "N",
+    "sourceLine": 15,
+    "srcStart": 25.28,
+    "srcEnd": 26.8,
+    "text": "Security deposit who?",
+    "pause": 0.15
+  },
+  {
+    "id": 31,
+    "speaker": "D",
+    "sourceLine": 14,
+    "srcStart": 29.07,
+    "srcEnd": 30.723,
+    "text": "Exactly. You never see me again.",
+    "pause": 1.2
+  }
+]
