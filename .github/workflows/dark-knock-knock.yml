@@ -2,7 +2,7 @@ name: BLACKSTAR Dark Knock-Knock Film
 on:
   push:
     branches:
-      - film/dark-knock-knock
+      - main
     paths:
       - .github/workflows/dark-knock-knock.yml
   workflow_dispatch:
@@ -104,5 +104,5 @@ jobs:
             echo 'Voice masters and brand kit already versioned'
           else
             git commit -m 'assets: preserve ElevenLabs voice masters and BLACKSTAR v5 kit'
-            git push origin HEAD:film/dark-knock-knock
+            git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
