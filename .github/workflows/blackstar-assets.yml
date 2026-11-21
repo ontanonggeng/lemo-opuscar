@@ -1,0 +1,69 @@
+name: BLACKSTAR — Preserve Voice and Brand Assets
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/blackstar-assets.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  preserve:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Rebuild the owner-provided v5 kit
+        run: |
+          python -m pip install 'numpy<3' pillow shapely cairosvg
+          python brand/blackstar/bootstrap.py
+
+      - name: Download the original generated ElevenLabs MP3s
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, urllib.request, urllib.parse
+          root=pathlib.Path('films/dark-knock-knock/assets')
+          root.mkdir(parents=True,exist_ok=True)
+          urls=json.loads(pathlib.Path('films/dark-knock-knock/voice-sources.json').read_text())
+          for actor,name in [('D','doris.mp3'),('N','nix.mp3')]:
+              dest=root/name
+              if dest.exists() and dest.stat().st_size>10000:
+                  print('Already exists:',dest)
+                  continue
+              url=urls[actor]
+              host=urllib.parse.urlparse(url).hostname
+              if host!='elevenlabsusercontent.com': raise RuntimeError('Unapproved audio URL host')
+              req=urllib.request.Request(url,headers={'User-Agent':'BLACKSTAR-Asset-Preservation/1.0'})
+              with urllib.request.urlopen(req,timeout=75) as resp:
+                  data=resp.read(20_000_001)
+              if not 10000<len(data)<=20_000_000: raise RuntimeError('Invalid voice master: '+name)
+              dest.write_bytes(data)
+              print('Preserved:',dest,len(data),'bytes')
+          PY
+
+      - name: Version original audio and all generated brand assets
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f films/dark-knock-knock/assets/doris.mp3 films/dark-knock-knock/assets/nix.mp3
+          git add -f brand/blackstar/source/build_blackstar_v5.py brand/blackstar/blackstar-brand-kit-v5.zip
+          git add -f brand/blackstar/v5/masters/*.svg
+          if git diff --cached --quiet; then
+            echo 'Asset files are already committed'
+          else
+            git commit -m 'assets: preserve ElevenLabs masters and BLACKSTAR v5 official kit'
+            git push origin HEAD:main
+          fi

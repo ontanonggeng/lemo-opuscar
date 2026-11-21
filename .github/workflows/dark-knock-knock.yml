@@ -1,10 +1,5 @@
 name: BLACKSTAR Dark Knock-Knock Film
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - .github/workflows/dark-knock-knock.yml
   workflow_dispatch:
 
 permissions:
@@ -97,9 +92,9 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add films/dark-knock-knock/assets/doris.mp3 films/dark-knock-knock/assets/nix.mp3
-          git add brand/blackstar/source/build_blackstar_v5.py brand/blackstar/blackstar-brand-kit-v5.zip
-          git add brand/blackstar/v5/masters/*.svg
+          git add -f films/dark-knock-knock/assets/doris.mp3 films/dark-knock-knock/assets/nix.mp3
+          git add -f brand/blackstar/source/build_blackstar_v5.py brand/blackstar/blackstar-brand-kit-v5.zip
+          git add -f brand/blackstar/v5/masters/*.svg
           if git diff --cached --quiet; then
             echo 'Voice masters and brand kit already versioned'
           else
