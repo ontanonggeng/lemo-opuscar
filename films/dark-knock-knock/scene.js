@@ -4,7 +4,7 @@
 // All sets, characters, lettering and animation are code-rendered.
 import {
   init, frame, shape, fillOnly, stroke, ell, rr, rect, spline,
-  noodle, arc, dot, push, pop, translate, rotate, scale, S, g
+  noodle, arc, dot, push, pop, translate, rotate, scale, S, g, text as worldText
 } from '/styles/scifi-toon/demo/toon.js';
 
 const canvas = document.getElementById('stage');
@@ -135,7 +135,7 @@ function drawDoor(t,e){
   // Face: grounded inside a recessed glass panel, variable expressions.
   const speaking=e?.speaker==='D';
   const amp=speaking?actorMouth(e,t):.06;
-  const lid=e?.text.includes('Exactly')?.64:.28;
+  const lid=(e && e.text.includes('Exactly')) ? .64 : .28;
   const look=e?.text.includes('Your')?-.24:.05;
   const blink=(Math.floor(q(t)*4)%43===0)&&!speaking;
   eye(391,350,22,25,{bag:'#51445a',lid,lidCol:'#877e96',look,blink});
@@ -242,10 +242,10 @@ function drawNix(t,e){
   // Ears, nose, subtle eye bags and tiny lopsided scar.
   oval(-56,-336,11,16,C.skinShade,3);oval(56,-333,11,16,C.skinShade,3);
   poly([[1,-334],[9,-312],[-3,-308]],'#b98265',3);
-  const look=turn?.70:panic?-.25:.28;
+  const look=turn ? .70 : (panic ? -.25 : .28);
   const blink=(Math.floor(t*2.3)%19===0)&&!panic;
-  eye(-25,-348,24,26,{bag:'#aa7d68',look,lid:panic?.01:.11,lidCol:C.skin,blink});
-  eye(25,-350,25,27,{bag:'#aa7d68',look,lid:panic?.04:.16,lidCol:C.skin,blink});
+  eye(-25,-348,24,26,{bag:'#aa7d68',look,lid:panic ? .01 : .11,lidCol:C.skin,blink});
+  eye(25,-350,25,27,{bag:'#aa7d68',look,lid:panic ? .04 : .16,lidCol:C.skin,blink});
   path([[-51,-389],[-31,-393],[-10,-384]],panic?6:4.5);
   path([[5,-387],[27,-391],[49,-385]],panic?6:4.5);
   const mouthH=panic?8+amp*28:4+amp*23;
@@ -270,9 +270,9 @@ function leaseCard(t,e){
   round(0,0,130,131,9,'#1a222e',6);
   poly([[8,9],[121,9],[121,111],[9,111]],'#dad0b9',3);
   for(let i=0;i<3;i++)poly([[15,22+i*18],[116,22+i*18],[116,24+i*18],[15,24+i*18]],'#b4a994',0);
-  typography('AUTO-RENT',63,17,11,'#3c3541','center','monospace');
-  typography('PAYMENT:',63,73,14,'#2c2630','center','monospace');
-  typography(e.text.includes('Years')?'5 YEARS':'LIFETIME',64,97,18,'#a64e46','center','monospace');
+  worldText('AUTO-RENT',63,17,{font:'bold 11px monospace',fill:'#3c3541'});
+  worldText('PAYMENT:',63,73,{font:'bold 14px monospace',fill:'#2c2630'});
+  worldText(e.text.includes('Years')?'5 YEARS':'LIFETIME',64,97,{font:'bold 18px monospace',fill:'#a64e46'});
   // Tiny folded printer tape edge.
   poly([[4,124],[12,132],[22,124],[32,132],[42,124],[52,132],[62,124],[72,132],[82,124],[92,132],[102,124],[112,132],[123,125]],'#e2d9c7',2);
   pop();
