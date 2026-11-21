@@ -1,0 +1,101 @@
+name: BLACKSTAR V2 — Final Film Render
+
+on:
+  push:
+    branches: [film/dark-knock-knock-v2-repair, main]
+    paths:
+      - .github/workflows/dark-knock-knock-v2-render.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: blackstar-v2-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    defaults:
+      run:
+        shell: bash -leo pipefail {0}
+    env:
+      LEMO_ANGLE: swiftshader
+      LEMO_COLOR: bt709
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: mamba-org/setup-micromamba@v3
+        with:
+          environment-name: media
+          create-args: ffmpeg=7.1
+
+      - name: Restore official BLACKSTAR v5 assets
+        run: |
+          python3 -m pip install --quiet 'numpy<3' pillow shapely cairosvg
+          python3 brand/blackstar/bootstrap.py
+
+      - name: Install Lemo-Opuscar core renderer
+        run: |
+          sh plugin/skills/lemo-opuscar/scripts/setup.sh deps
+          node node_modules/playwright-core/cli.js install-deps chromium
+
+      - name: Check animation and audio assembler syntax
+        run: |
+          node --check films/dark-knock-knock/scene.js
+          python3 -m py_compile films/dark-knock-knock/assemble.py
+
+      - name: Render film with full independent ElevenLabs cues
+        run: |
+          sh films/dark-knock-knock/build.sh
+
+      - name: Video and dialogue completeness gates
+        run: |
+          python3 - <<'PY'
+          import json,pathlib,subprocess
+          d=pathlib.Path('films/dark-knock-knock')
+          v=d/'out/dark-knock-knock-v2.mp4'
+          meta=json.loads(subprocess.check_output(
+              ['ffprobe','-v','error','-show_streams','-show_format','-of','json',str(v)],text=True))
+          streams=meta['streams']
+          video=[s for s in streams if s['codec_type']=='video']
+          audio=[s for s in streams if s['codec_type']=='audio']
+          assert len(video)==1 and len(audio)==1,'Video and audio both required'
+          assert video[0]['width']==720 and video[0]['height']==1280,'Incorrect portrait resolution'
+          assert video[0]['codec_name']=='h264','Expected H.264'
+          t=json.loads((d/'out/timeline.json').read_text())
+          qa=json.loads((d/'out/voice-qa.json').read_text())
+          assert t['version']==2 and len(t['lines'])==31
+          assert qa['destructiveTimeCuts'] is False
+          assert qa['usedOriginalFiles']==31
+          assert all('mouth12fps' in cue and cue['mouth12fps'] for cue in t['lines'])
+          assert len(list((d/'voice-v2').glob('*.mp3')))==31
+          duration=float(meta['format']['duration'])
+          assert abs(duration-float(t['duration']))<0.35,(duration,t['duration'])
+          assert (d/'out/dark-knock-knock.srt').is_file()
+          assert pathlib.Path('brand/blackstar/v5/video/corner-watermark-white-512.png').is_file()
+          assert pathlib.Path('brand/blackstar/v5/video/end-card-black-9x16.png').is_file()
+          print(f"PASS: {duration:.2f}s, 720x1280, H.264/AAC, 31 complete MP3s, all subtitles, BLACKSTAR watermark/endcard")
+          PY
+
+      - name: Upload final film plus verification
+        uses: actions/upload-artifact@v4
+        with:
+          name: BLACKSTAR-Dark-Knock-Knock-V2-${{ github.run_id }}
+          path: |
+            films/dark-knock-knock/out/dark-knock-knock-v2.mp4
+            films/dark-knock-knock/out/dark-knock-knock.srt
+            films/dark-knock-knock/out/timeline.json
+            films/dark-knock-knock/out/voice-qa.json
+          if-no-files-found: error
+          retention-days: 14
