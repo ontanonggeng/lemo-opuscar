@@ -1,7 +1,12 @@
-# Manual only: do not spend runner time on every source edit.
+# On merge, one smoke test runs when CI files change; other renders are manual.
 name: Film render
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/render-film.yml'
+      - 'ci/render-smoke/**'
   workflow_dispatch:
     inputs:
       project_dir:
@@ -24,7 +29,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: film-render-${ github.ref }
+  group: film-render-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -35,7 +40,7 @@ jobs:
       run:
         shell: bash -leo pipefail {0}
     env:
-      PROJECT_DIR: ${ inputs.project_dir }
+      PROJECT_DIR: ${{ inputs.project_dir || 'ci/render-smoke' }}
       LEMO_ANGLE: swiftshader
       LEMO_COLOR: bt709
 
@@ -93,8 +98,8 @@ jobs:
         run: |
           set -euo pipefail
           tiers=()
-          if [[ "${ inputs.voice_tier }" == "true" ]]; then tiers+=(voice); fi
-          if [[ "${ inputs.music_tier }" == "true" ]]; then tiers+=(music); fi
+          if [[ "${{ inputs.voice_tier || 'false' }}" == "true" ]]; then tiers+=(voice); fi
+          if [[ "${{ inputs.music_tier || 'false' }}" == "true" ]]; then tiers+=(music); fi
           sh plugin/skills/lemo-opuscar/scripts/setup.sh deps "${tiers[@]}"
           # Install shared libraries needed by the headless Chromium on Linux.
           node node_modules/playwright-core/cli.js install-deps chromium
@@ -138,9 +143,9 @@ jobs:
         if: always() && steps.validate.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
-          name: lemo-render-${ github.run_id }
+          name: lemo-render-${{ github.run_id }}
           path: |
-            ${ steps.validate.outputs.project_dir }/**/*.mp4
-            ${ steps.validate.outputs.project_dir }/**/*.srt
+            ${{ steps.validate.outputs.project_dir }}/**/*.mp4
+            ${{ steps.validate.outputs.project_dir }}/**/*.srt
           if-no-files-found: warn
           retention-days: 7
