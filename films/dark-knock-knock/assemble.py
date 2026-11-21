@@ -1,101 +1,150 @@
 #!/usr/bin/env python3
-"""Use approved ElevenLabs dialogue to assemble a timed original short film soundtrack."""
-import json, math, os, pathlib, subprocess, urllib.parse, urllib.request, wave
+"""BLACKSTAR V2 — assemble complete, individual ElevenLabs cues without destructive trims.
+
+One prompt = one complete MP3. Unlike V1, no ASR-derived source offsets are used.
+This cannot clip a word when its alignment timestamp is inaccurate.
+"""
+from __future__ import annotations
+import hashlib
+import json
+import math
+import pathlib
+import subprocess
+import wave
+
 import numpy as np
 
 ROOT = pathlib.Path(__file__).resolve().parent
-ASSETS = ROOT / "assets"
 OUT = ROOT / "out"
-ASSETS.mkdir(exist_ok=True)
-OUT.mkdir(exist_ok=True)
-SR = 48000
-lines = json.loads((ROOT / "dialogue.json").read_text())
-urls = json.loads((ROOT / "voice-sources.json").read_text())
-def download(actor):
-    p = ASSETS / ("doris.mp3" if actor == "D" else "nix.mp3")
-    if p.exists() and p.stat().st_size > 10000:
-        return p
-    url = urls[actor]
-    u = urllib.parse.urlparse(url)
-    if u.scheme != "https" or u.hostname != "elevenlabsusercontent.com":
-        raise RuntimeError("Only approved ElevenLabs CDN URLs accepted")
-    req = urllib.request.Request(url, headers={"User-Agent": "BLACKSTAR-Renderer/1.0"})
-    with urllib.request.urlopen(req, timeout=60) as resp:
-        data = resp.read(20_000_001)
-    if not 10_000 < len(data) <= 20_000_000:
-        raise RuntimeError("ElevenLabs download invalid size")
-    p.write_bytes(data)
-    return p
+VOICES = ROOT / "voice-v2"
+OUT.mkdir(parents=True, exist_ok=True)
+SR = 48_000
 
-tracks = {}
-for actor in ("D", "N"):
-    fn = download(actor)
-    raw = OUT / (actor + ".raw")
-    subprocess.run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", str(fn), "-ac", "1", "-ar", str(SR), "-f", "s16le", str(raw)], check=True)
-    tracks[actor] = np.fromfile(raw, dtype=np.int16).astype(np.float32) / 32768.0
-    if len(tracks[actor]) < SR * 10:
-        raise RuntimeError("ElevenLabs source unexpectedly short: " + actor)
+def probe_duration(path: pathlib.Path) -> float:
+    data = subprocess.check_output(
+        ["ffprobe", "-v", "error", "-show_entries", "format=duration",
+         "-of", "default=noprint_wrappers=1:nokey=1", str(path)],
+        text=True
+    ).strip()
+    return float(data)
 
-events, pos = [], 0.45
+lines = json.loads((ROOT / "dialogue.json").read_text(encoding="utf-8"))
+assert len(lines) == 31
+assert [e["id"] for e in lines] == list(range(1, 32))
+voice_data = []
+events = []
+pos = 0.40
+
 for cue in lines:
-    actor = cue["speaker"]
-    a, b = cue["srcStart"], cue["srcEnd"]
-    start, end = int(a * SR), int(b * SR)
-    assert 0 <= start < end <= len(tracks[actor]) + 5000, cue
-    duration = (end - start) / SR
-    events.append({**cue, "start": round(pos, 3), "end": round(pos + duration, 3)})
-    pos += duration + cue["pause"]
-brand_start = round(pos + 0.65, 3)
-duration = round(brand_start + 2.4, 3)
-if not 50 <= duration <= 78:
-    raise RuntimeError(f"Duration outside expected short range: {duration:.2f}s")
-count = math.ceil(duration * SR)
-t = np.arange(count, dtype=np.float64) / SR
-# A very quiet ship's air handling is audible until the brand end card.
-mix = (0.0013 * np.sin(2 * math.pi * 69 * t)).astype(np.float32)
-for cue in events:
-    actor = cue["speaker"]
-    src = tracks[actor]
-    clip = src[int(cue["srcStart"] * SR):int(cue["srcEnd"] * SR)].copy()
-    if clip.size == 0:
-        raise RuntimeError("No dialogue samples: " + str(cue["id"]))
-    # Smooth joins and match track energy without crushing expressive dynamics.
-    rms = float(np.sqrt(np.mean(clip * clip) + 1e-10))
-    gain = min(2.2, .088 / max(.018, rms))
-    clip *= gain
-    fade = min(len(clip)//2, int(.012 * SR))
-    if fade:
-        clip[:fade] *= np.linspace(0, 1, fade)
-        clip[-fade:] *= np.linspace(1, 0, fade)
-    dst = int(cue["start"] * SR)
-    mix[dst:dst + len(clip)] += clip
-    # Original, synthesized wooden-metal knock under each "Knock knock" call.
-    if actor == "D" and cue["text"] == "Knock knock.":
-        for off in (0.06, 0.39):
-            idx = int((cue["start"] + off) * SR)
-            n = min(int(.105*SR), count - idx)
-            if n > 0:
-                tt = np.arange(n)/SR
-                knock = .075*np.exp(-tt*42)*(np.sin(2*np.pi*132*tt) + .40*np.sin(2*np.pi*311*tt))
-                mix[idx:idx+n] += knock.astype(np.float32)
-# The quiet knocking inside the wall leads into the final reversal.
-wall = next(e for e in events if "inside the wall" in e["text"])
-for off in (.3,.68,1.07):
-    idx = int((wall["end"] + off) * SR)
-    n = min(int(.12*SR), count-idx)
-    if n > 0:
-        tt=np.arange(n)/SR
-        mix[idx:idx+n] += (.055*np.exp(-tt*35)*np.sin(2*np.pi*88*tt)).astype(np.float32)
-mix *= min(1.0, .89/max(.89, float(np.max(np.abs(mix)))))
-with wave.open(str(OUT / "mix.wav"),"wb") as wav:
-    wav.setnchannels(1);wav.setsampwidth(2);wav.setframerate(SR)
-    wav.writeframes((np.clip(mix,-1,1)*32767).astype("<i2").tobytes())
-(OUT/"timeline.json").write_text(json.dumps({"duration":duration,"brandStart":brand_start,"lines":events},indent=2))
-def srt_ts(x):
-    ms = round(x * 1000)
-    return f"{ms//3600000:02d}:{ms//60000%60:02d}:{ms//1000%60:02d},{ms%1000:03d}"
+    idx = cue["id"]
+    file = VOICES / f"{idx:02}.mp3"
+    if not file.is_file() or file.stat().st_size < 1000:
+        raise SystemExit(f"Missing original ElevenLabs cue: {file}")
+    duration = probe_duration(file)
+    if not 0.40 < duration < 12.0:
+        raise SystemExit(f"Implausible cue duration {idx}: {duration}")
+    # All decoded samples are included, even the first/last silent encoder frames.
+    raw = subprocess.check_output([
+        "ffmpeg", "-nostdin", "-hide_banner", "-loglevel", "error",
+        "-i", str(file), "-f", "f32le", "-ar", str(SR), "-ac", "1", "-"
+    ])
+    samples = np.frombuffer(raw, dtype="<f4").copy()
+    actual = len(samples) / SR
+    if len(samples) < int(.35 * SR):
+        raise SystemExit(f"Decoded cue {idx} unexpectedly short")
+    # Do not time-stretch or truncate the file. Only adjust whole-clip gain.
+    rms = float(np.sqrt(np.mean(samples.astype(np.float64) ** 2) + 1e-12))
+    gain = min(1.8, .11 / max(rms, .045))
+    samples *= gain
+    spoken_start = round(pos, 3)
+    spoken_end = round(pos + actual, 3)
+    events.append({
+        "id": idx,
+        "speaker": cue["speaker"],
+        "text": cue["text"],
+        "start": spoken_start,
+        "end": spoken_end,
+        "duration": round(actual, 4),
+        "voiceFile": file.name
+    })
+    voice_data.append((spoken_start, samples))
+    # A short controlled pause; longer holds after dark punchlines.
+    is_reveal = any(k in cue["text"] for k in (
+        "years.", "terms you skipped", "evicted", "previous tenant",
+        "never see me again"
+    ))
+    pause = max(.11, min(.28, float(cue.get("pause", .16))))
+    if is_reveal:
+        pause += .18
+    pos += actual + pause
+
+brand_start = round(pos + .30, 3)
+duration = round(brand_start + 2.50, 3)
+if not 58 <= duration <= 90:
+    raise SystemExit(f"Unexpected V2 film duration: {duration:.2f}s")
+mix = np.zeros(math.ceil((duration + .02) * SR), dtype=np.float32)
+for start, audio in voice_data:
+    i = int(round(start * SR))
+    mix[i:i + len(audio)] += audio
+
+# Synthesized production-only foley, deliberately quieter than dialogue.
+def thump(at, *, amplitude=.065, tone=135):
+    begin = round(at * SR)
+    n = min(int(.14 * SR), len(mix) - begin)
+    if begin < 0 or n <= 0:
+        return
+    time = np.arange(n, dtype=np.float32) / SR
+    kick = amplitude * np.exp(-time * 37) * (
+        np.sin(time * 2 * np.pi * tone) + .28 * np.sin(time * 2 * np.pi * tone * 2.4)
+    )
+    mix[begin:begin+n] += kick.astype(np.float32)
+
+for e in events:
+    if e["speaker"] == "D" and e["text"] == "Knock knock.":
+        thump(e["start"] + .25, amplitude=.038, tone=160)
+        thump(e["start"] + .59, amplitude=.044, tone=140)
+    if e["text"].startswith("Wait. What's knocking"):
+        for dt in (.8, 1.23, 1.70):
+            thump(e["start"] + dt, amplitude=.033, tone=91)
+
+# Soft ship ventilation only while the characters are on-screen.
+ambient_len = round(brand_start * SR)
+hum_t = np.arange(ambient_len, dtype=np.float32) / SR
+mix[:ambient_len] += .0009 * np.sin(2 * np.pi * 72 * hum_t)
+
+peak = max(1e-6, float(np.max(np.abs(mix))))
+if peak > .92:
+    mix *= .92 / peak
+with wave.open(str(OUT / "mix.wav"), "wb") as out:
+    out.setnchannels(1)
+    out.setsampwidth(2)
+    out.setframerate(SR)
+    out.writeframes((np.clip(mix, -1, 1) * 32767).astype("<i2").tobytes())
+
+timeline = {"duration": duration, "brandStart": brand_start, "lines": events, "version": 2}
+(OUT / "timeline.json").write_text(json.dumps(timeline, indent=2) + "\n", encoding="utf-8")
+
+def stamp(secs):
+    ms = round(secs * 1000)
+    return f"{ms//3600000:02d}:{(ms//60000)%60:02d}:{(ms//1000)%60:02d},{ms%1000:03d}"
+
 srt = []
-for i,e in enumerate(events,1):
-    srt.extend([str(i), srt_ts(e["start"])+" --> "+srt_ts(e["end"]), e["text"],""])
-(OUT/"dark-knock-knock.srt").write_text("\n".join(srt),encoding="utf-8")
-print(f"Mixed {len(events)} synced dialogue clips from ElevenLabs; duration {duration}s; brand at {brand_start}s")
+for i, event in enumerate(events, 1):
+    srt.extend((str(i), f"{stamp(event['start'])} --> {stamp(event['end'])}",
+                event["text"], ""))
+(OUT / "dark-knock-knock.srt").write_text("\n".join(srt), encoding="utf-8")
+qa = {
+    "voiceSource": "31 independent complete ElevenLabs MP3 files",
+    "destructiveTimeCuts": False,
+    "usedOriginalFiles": 31,
+    "cues": [
+        {
+            "id": e["id"], "text": e["text"], "file": e["voiceFile"],
+            "duration": e["duration"],
+            "sha256": hashlib.sha256((VOICES/e["voiceFile"]).read_bytes()).hexdigest()
+        } for e in events
+    ],
+    "limitations": "The mixer prevents boundary clipping. Transcript accuracy for every independent MP3 still requires speech recognition/listening QA."
+}
+(OUT/"voice-qa.json").write_text(json.dumps(qa,indent=2)+"\n")
+print(f"BLACKSTAR V2 AUDIO PASS: {len(events)} entire speech files, duration={duration:.2f}s, endcard={brand_start:.2f}s")
