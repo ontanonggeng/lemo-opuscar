@@ -58,6 +58,11 @@ for cue in lines:
     samples *= gain
     spoken_start = round(pos, 3)
     spoken_end = round(pos + actual, 3)
+    step = SR // 12  # acting and lip shapes are exposed on twos at 12 fps
+    blocks = [samples[j:j+step] for j in range(0, len(samples), step)]
+    levels = [float(np.sqrt(np.mean(b.astype(np.float64)**2))) for b in blocks]
+    reference = max(.025, float(np.quantile(levels, .88)))
+    mouth = [round(min(1., max(0., (a/reference-.15)/.85)), 2) for a in levels]
     events.append({
         "id": idx,
         "speaker": cue["speaker"],
@@ -65,7 +70,8 @@ for cue in lines:
         "start": spoken_start,
         "end": spoken_end,
         "duration": round(actual, 4),
-        "voiceFile": file.name
+        "voiceFile": file.name,
+        "mouth12fps": mouth
     })
     voice_data.append((spoken_start, samples))
     # A short controlled pause; longer holds after dark punchlines.
