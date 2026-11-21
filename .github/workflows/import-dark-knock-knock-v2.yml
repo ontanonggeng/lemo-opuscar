@@ -18,6 +18,11 @@ jobs:
         with:
           persist-credentials: true
 
+      - name: Install FFprobe for MP3 validation
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+
       - name: Download and validate all 31 independent speech clips
         run: |
           python3 - <<'PY'
