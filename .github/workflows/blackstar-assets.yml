@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - .github/workflows/blackstar-assets.yml
+      - brand/blackstar/bootstrap.py
+      - brand/blackstar/v5-official-guides.zlib.b64
   workflow_dispatch:
 
 permissions:
