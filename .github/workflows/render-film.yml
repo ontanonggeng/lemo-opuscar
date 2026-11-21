@@ -1,0 +1,151 @@
+# On merge, one smoke test runs when CI files change; other renders are manual.
+name: Film render
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/render-film.yml'
+      - 'ci/render-smoke/**'
+  workflow_dispatch:
+    inputs:
+      project_dir:
+        description: "ci/render-smoke (test) or films/<slug> (your film)"
+        required: true
+        default: ci/render-smoke
+        type: string
+      voice_tier:
+        description: "Install offline Kokoro TTS and Whisper checks"
+        required: true
+        default: false
+        type: boolean
+      music_tier:
+        description: "Install the optional procedural music tier"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: film-render-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    defaults:
+      run:
+        shell: bash -leo pipefail {0}
+    env:
+      PROJECT_DIR: ${{ inputs.project_dir || 'ci/render-smoke' }}
+      LEMO_ANGLE: swiftshader
+      LEMO_COLOR: bt709
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate project path
+        id: validate
+        run: |
+          python3 - <<'PY'
+          import os
+          import pathlib
+          import re
+
+          project = os.environ["PROJECT_DIR"]
+          if project != "ci/render-smoke" and not re.fullmatch(r"films/[a-zA-Z0-9][a-zA-Z0-9_-]*", project):
+              raise SystemExit("Project must be ci/render-smoke or films/<slug> (no absolute paths).")
+          root = pathlib.Path.cwd().resolve()
+          target = (root / project).resolve()
+          if not target.is_relative_to(root) or not (target / "build.sh").is_file():
+              raise SystemExit("No project build.sh at " + project)
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
+              print("project_dir=" + project, file=f)
+          print("Building " + project)
+          PY
+
+      # The library's mux.sh requires FFmpeg 7+, not Ubuntu 24.04's FFmpeg 6.
+      - name: FFmpeg 7
+        uses: mamba-org/setup-micromamba@v3
+        with:
+          environment-name: media
+          create-args: >-
+            ffmpeg=7.1
+
+      - name: Check tool versions
+        run: |
+          set -euo pipefail
+          ffmpeg -version | head -n 1
+          ffprobe -version | head -n 1
+          node --version
+          python3 --version
+
+      - name: Install Lemo-Opuscar dependencies
+        run: |
+          set -euo pipefail
+          tiers=()
+          if [[ "${{ inputs.voice_tier || 'false' }}" == "true" ]]; then tiers+=(voice); fi
+          if [[ "${{ inputs.music_tier || 'false' }}" == "true" ]]; then tiers+=(music); fi
+          sh plugin/skills/lemo-opuscar/scripts/setup.sh deps "${tiers[@]}"
+          # Install shared libraries needed by the headless Chromium on Linux.
+          node node_modules/playwright-core/cli.js install-deps chromium
+
+      - name: Build film
+        run: |
+          set -euo pipefail
+          date -u +%s > "$RUNNER_TEMP/lemo-render-start"
+          sh "$PROJECT_DIR/build.sh"
+
+      - name: Verify fresh video output
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import pathlib
+          import subprocess
+
+          started = int((pathlib.Path(os.environ["RUNNER_TEMP"]) / "lemo-render-start").read_text())
+          outputs = [
+              p for p in pathlib.Path(os.environ["PROJECT_DIR"]).rglob("*.mp4")
+              if p.stat().st_size > 0 and p.stat().st_mtime >= started - 2
+          ]
+          if not outputs:
+              raise SystemExit("Build returned without producing a new, nonempty MP4.")
+          for path in outputs:
+              details = json.loads(subprocess.check_output([
+                  "ffprobe", "-v", "error", "-select_streams", "v:0",
+                  "-show_entries", "stream=codec_name,width,height",
+                  "-of", "json", str(path)
+              ], text=True))
+              if not details.get("streams"):
+                  raise SystemExit("Missing video stream: " + str(path))
+              stream = details["streams"][0]
+              if not stream.get("width") or not stream.get("height"):
+                  raise SystemExit("Missing video dimensions: " + str(path))
+              print(f"OK {path}: {stream['width']}x{stream['height']}, {stream['codec_name']}")
+          PY
+
+      - name: Upload rendered films
+        if: always() && steps.validate.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: lemo-render-${{ github.run_id }}
+          path: |
+            ${{ steps.validate.outputs.project_dir }}/**/*.mp4
+            ${{ steps.validate.outputs.project_dir }}/**/*.srt
+          if-no-files-found: warn
+          retention-days: 7
