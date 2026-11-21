@@ -59,7 +59,7 @@ function actorMouth(e,t){
 }
 function eye(cx,cy,rx,ry,opt={}){
   // Eye bag and eyelid are independent acting layers, not a cartoon sticker.
-  oval(cx,cy+5,rx+3,ry+4,opt.bag||C.skinShade,0);
+  oval(cx,cy+3,rx+1,ry+2,opt.bag||C.skinShade,0);
   oval(cx,cy,rx,ry,C.chalk,4.5);
   const blink=opt.blink;
   if(blink){
@@ -99,7 +99,7 @@ function drawBackground(t,e){
   oval(182,114,69,6,'#f2d9ac',1);
   poly([[111,119],[250,119],[256,132],[102,132]],'#b1a292',2);
   // Beam light affects nearby surfaces using hard-edged patches, no gradient.
-  poly([[144,131],[230,131],[261,350],[84,350]],'#3b3948',0);
+  poly([[164,128],[203,128],[211,338],[139,338]],'#333343',0);
   // Floor surface with receding vanishing point.
   poly([[-300,755],[900,755],[1200,1200],[-450,1200]],'#24212f',0);
   poly([[-80,759],[620,759],[620,782],[-80,782]],'#4a4252',4);
@@ -153,7 +153,7 @@ function drawDoor(t,e){
   for(let i=0;i<10;i++)round(348+i*12,438,7,2,1,'#393144',0);
   // Hardware ID chip, not random futuristic HUD ornament.
   round(355,469,106,31,5,'#282638',4);
-  typography('D-ORIS  /  A.I.',408,485,13,'#bab3c3','center','monospace');
+  worldText('D-ORIS / A.I.',408,485,{font:'bold 12px monospace',fill:'#bab3c3'});
   // Physical knock-knock button: eccentric skull with ceramic incisions.
   round(375,517,76,112,23,'#211c2a',7);
   oval(413,555,31,30,'#d2c5b5',5);
@@ -228,7 +228,8 @@ function drawNix(t,e){
   // Right elbow rotates towards the lease reader during shock lines.
   const rightY=turn?-178:panic?-204:-146;
   shape(noodle([51,-220],[76,rightY],-23,31,22),{fill:C.jacket,lw:6});
-  oval(78,rightY,15,15,C.skin,4);
+  oval(78,rightY,13,12,C.skin,4);
+  for(let d=0;d<3;d++)path([[84+d*3,rightY-6],[91+d*4,rightY+3],[88+d*4,rightY+10]],2.3,C.skinShade);
   if(turn||panic){
     for(let i=0;i<3;i++)path([[81+i*3,rightY-7],[91+i*4,rightY-15]],2);
   }
@@ -238,27 +239,27 @@ function drawNix(t,e){
   poly([[-72,-362],[-61,-403],[-40,-416],[-31,-384]],'#9f5653',3);
   poly([[37,-404],[63,-374],[66,-349],[50,-357]],'#c77453',3);
   curve([[-54,-366],[-32,-399],[19,-399],[53,-375],[60,-322],[38,-283],[-20,-282],[-58,-312]],C.skin,6);
-  poly([[-43,-307],[-10,-296],[32,-302],[47,-320],[45,-302],[26,-283],[-22,-285]],'#b98669',0);
+  poly([[-39,-304],[-15,-285],[24,-285],[39,-306],[32,-294],[14,-282],[-20,-283]],'#b98669',0);
   // Ears, nose, subtle eye bags and tiny lopsided scar.
   oval(-56,-336,11,16,C.skinShade,3);oval(56,-333,11,16,C.skinShade,3);
-  poly([[1,-334],[9,-312],[-3,-308]],'#b98265',3);
+  poly([[1,-343],[9,-325],[-4,-322]],'#b98265',2.4);
   const look=turn ? .70 : (panic ? -.25 : .28);
   const blink=(Math.floor(t*2.3)%19===0)&&!panic;
   eye(-25,-348,24,26,{bag:'#aa7d68',look,lid:panic ? .01 : .11,lidCol:C.skin,blink});
   eye(25,-350,25,27,{bag:'#aa7d68',look,lid:panic ? .04 : .16,lidCol:C.skin,blink});
   path([[-51,-389],[-31,-393],[-10,-384]],panic?6:4.5);
   path([[5,-387],[27,-391],[49,-385]],panic?6:4.5);
-  const mouthH=panic?8+amp*28:4+amp*23;
-  oval(0,-308,21+amp*8,mouthH,'#3d2530',4);
+  const mouthH=panic ? 6+amp*22 : 3+amp*17;
+  oval(0,-299,18+amp*6,mouthH,'#3d2530',3.7);
   if(speaking && amp>.45){
-    poly([[-14,-312],[15,-312],[14,-307],[-13,-307]],C.chalk,1);
-    if(amp>.7)oval(0,-298,10,4,'#b75467',0);
+    poly([[-12,-303],[12,-303],[11,-299],[-11,-299]],C.chalk,1);
+    if(amp>.7)oval(0,-293,8,3,'#b75467',0);
   }
   if(panic){
     poly([[67,-382],[75,-396],[80,-376],[71,-366]],'#83bfc2',1);
     dot(74,-372,2,'#f2ded7');
   }
-  path([[-49,-325],[-43,-317],[-36,-322]],2,C.skinShade);
+  path([[-50,-331],[-45,-327],[-40,-330]],1.5,C.skinShade);
   pop();
   pop();
 }
@@ -340,7 +341,7 @@ function camera(e){
   return {z:1,x:270,y:475};
 }
 function renderScene(t){
-  frame(t,{amp:1.2}); // 3 alternating boil drawings, stepped at 12 fps
+  frame(t,{amp:.95}); // 3 controlled boil drawings, stepped at 12 fps
   S.lwScale=PX;
   scale(PX);
   // End card must remain entirely original, no watermark or extra wordmark.
