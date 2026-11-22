@@ -10,6 +10,7 @@ const lines=await fetch('./lines.json').then(r=>r.json());
 const dur=await fetch('./voices/dur.json').then(r=>r.json());
 const lips=await fetch('./voices/lips.json').then(r=>r.json());
 await document.fonts.ready;
+const WM=new Image();WM.src='/brand/blackstar/v5/video/corner-watermark-white-512.png';await WM.decode();
 
 const PAL={wall:'#d4c6ad',wallS:'#b4a38b',cab:'#9b694f',cabS:'#735044',counter:'#d39a68',floor:'#6d6972',
  navy:'#374755',orange:'#d17148',cream:'#f2e3c5',metal:'#999b98',metalS:'#676c6b',sink:'#526570',
@@ -277,9 +278,7 @@ function captions(t){
  });g.restore();
 }
 function cornerMark(){
- // brand-safe understated BLACKSTAR text mark when generated image asset is unavailable in source page.
- g.save();g.setTransform(U,0,0,U,0,0);g.globalAlpha=.58;g.font='800 12px "Baloo 2"';g.textAlign='right';g.fillStyle='#fff';g.strokeStyle=INK;g.lineWidth=3;
- g.strokeText('BLACKSTAR',512,37);g.fillText('BLACKSTAR',512,37);g.restore();
+ g.save();g.setTransform(U,0,0,U,0,0);g.globalAlpha=.72;g.drawImage(WM,440,30,72,72);g.restore();
 }
 window.render=t=>{
  frame(t,{amp:1.7});S.lwScale=1;scale(U);
