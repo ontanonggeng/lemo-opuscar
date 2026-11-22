@@ -3,7 +3,7 @@
 Status: production treatment. Target: 42–45 seconds, 1080×1920, 24 fps, US English, Lemo-Opuscar scifi-toon.
 
 ## Audience and creative brief
-Original recurring-character BLACKSTAR sci-fi sitcom Short. Ellis discovers a mistake-reversing remote; Pact interprets mistakes too broadly. Standalone story for a US audience. Never alter or publish the already-uploaded Short "My AI Canceled Saturday."
+Original recurring-character BLACKSTAR sci-fi sitcom Short. Rae discovers a mistake-reversing remote; LOOP interprets mistakes too broadly. Standalone story for a US audience. Never alter or publish the already-uploaded Short "My AI Canceled Saturday."
 
 ## Prior performance context (Ask Studio, preliminary)
 - Previous Short: 1,165 views, 341 engaged views, stayed to watch 28.62%, average view duration 12 seconds over approximately 63 seconds.
@@ -18,27 +18,27 @@ Original recurring-character BLACKSTAR sci-fi sitcom Short. Ellis discovers a mi
 **Selected: A**, with only one major status reveal and one day rewind, then an efficient callback.
 
 ## Character and continuity lock
-Characters: Ellis and Pact. Existing Episode 01 screen designs and ElevenLabs voice assignments must be reused once verified, never guessed. The repo main branch has a BLACKSTAR v5 brand kit and the scifi-toon engine, but does not presently expose verified Ellis/Pact rig files or Episode 01 TTS voice IDs. Do not reuse the Nix/Doris voices or character drawings as substitutes. No new character design can be labeled canon without owner references.
+This Short introduces Rae and LOOP as original characters; do not reuse an existing series cast by default. Rae is a dry, overworked adult woman in a mustard jacket; LOOP is an unobtrusive, triangular desktop assistant. Production uses offline Kokoro voices: Rae `af_heart` and LOOP `am_michael`. No voice/API key dependency. Hand-authored 2D vector rigs must show credible anatomy, acting, and hand-to-prop contact.
 
 ## Story logic
-The remote rolls back a *related cluster of events* rather than the single last physical motion. Pact's analysis wrongly assigns the cluster, producing unintended consequences. A final instruction rolls back remote acquisition, so effects made by that remote are also undone. The original spilled coffee and awkward text return. Establish the retroactive nature visually.
+The remote rolls back a *related cluster of events* rather than the single last physical motion. LOOP's analysis wrongly assigns the cluster, producing unintended consequences. A final instruction rolls back remote acquisition, so effects made by that remote are also undone. The original spilled coffee and awkward text return. Establish the retroactive nature visually.
 
 ## Timeline and staging
-- **0:00–0:02** — Immediate close-up: coffee tips toward computer keyboard; Ellis hits UNDO; droplets reverse into the mug.
-- **0:02–0:07** — Ellis reacts; Pact describes the device in one dry line. Establish buttons and rule, no title intro.
-- **0:07–0:15** — Ellis reverses his embarrassing boss text. Phone says MESSAGE UNSENT, then EMPLOYMENT RECORD REMOVED. First payoff by 0:15.
-- **0:15–0:25** — Ellis tries to undo the collateral damage. Apartment jump-cuts to early morning, with his alarm ringing. Pact notes the regression.
-- **0:25–0:35** — Exasperated Ellis commands the remote to undo its own acquisition. It disappears; earlier effects revert with one clear transformation.
-- **0:35–0:43** — Original coffee spills again and the boss's new reply appears: "Love you too." Ellis responds with a cold look.
+- **0:00–0:02** — Immediate close-up: coffee tips toward computer keyboard; Rae hits UNDO; droplets reverse into the mug.
+- **0:02–0:07** — Rae reacts; LOOP describes the device in one dry line. Establish buttons and rule, no title intro.
+- **0:07–0:15** — Rae reverses his embarrassing boss text. Phone says MESSAGE UNSENT, then EMPLOYMENT RECORD REMOVED. First payoff by 0:15.
+- **0:15–0:25** — Rae tries to undo the collateral damage. Apartment jump-cuts to early morning, with his alarm ringing. LOOP notes the regression.
+- **0:25–0:35** — Exasperated Rae commands the remote to undo its own acquisition. It disappears; earlier effects revert with one clear transformation.
+- **0:35–0:43** — Original coffee spills again and the boss's new reply appears: "Love you too." Rae responds with a cold look.
 - **0:43–0:45** — Finish on dry, short punchline and immediate hard cut. No closing CTA.
 
 ## Production constraints and quality gates
 - Native portrait framing, original controlled line boil, adult-animation proportions, anatomically stable hand contact and props; not a collage of AI-generated stills.
 - At most a few purposeful shots, with reaction close-ups and prop insert. Keep subtitle band clear, use official BLACKSTAR v5 corner-watermark.
-- ElevenLabs dialogue clips must be checked by listening/transcription against approved screenplay. Never trim first syllables via guessed ASR timestamps.
+- Kokoro dialogue clips must be checked by listening/transcription against approved screenplay. Never trim first syllables via guessed ASR timestamps.
 - Use brand/blackstar/v5/video/corner-watermark-white-512.png after validating asset availability; add end card only if it does not bury the joke.
 - Deliver scene code, audio sources, final captions, build script, actual MP4, frame contact sheet, QA notes, metadata and GitHub Actions artifact. A completed workflow alone is not artistic QA.
 - Do not publish or schedule any YouTube content.
 
-## Blocking dependency
-The currently accessible GitHub branch does not establish Episode 01 Ellis/Pact model rigs, approved voices or actual reusable scene assets. Recover those before claiming final character/voice continuity.
+## Production status
+Original Rae/LOOP scenes, Kokoro WAV pipeline, and GitHub Actions renderer are implemented. Art and speech quality acceptance requires inspection of the final rendered artifact.
