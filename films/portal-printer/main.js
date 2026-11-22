@@ -133,7 +133,7 @@ function S5(t){
 // 18–21: whip-pan dialogue between faces.
 function S6(t){
  const u=ss(seg(t,19.28,19.55)),cx=lerp(245,825,u);
- cam(cx,950,1.38,0,u>0&&u<1?12,t);
+ cam(cx,950,1.38,0,u>0&&u<1?12:0,t);
  warehouse(t);
  kip(K(t,{x:250,y:1580,s:1.0,panic:.85,gesture:.45,look:[.4,-.1]}));
  marn(M(t,{x:820,y:1580,s:1.02,lid:.61,look:[-.25,0],brow:-.3}));
