@@ -58,7 +58,7 @@ jobs:
       - name: Restore approved BLACKSTAR v5 assets
         run: |
           .venv/bin/python -m pip install --quiet 'numpy<3' pillow shapely cairosvg
-          python3 brand/blackstar/bootstrap.py
+          .venv/bin/python brand/blackstar/bootstrap.py
           test -s brand/blackstar/v5/video/corner-watermark-white-512.png
 
       - name: Syntax and project integrity
