@@ -38,7 +38,7 @@ One apartment kitchen only. Palette: beige plaster, brown cabinetry, dusty orang
 | 00:02.4–00:05.7 | Nora barely looks up: "You said we needed one clean fork." | Hard reaction close-up |
 | 00:05.7–00:09.2 | Hard cut: emergency fork behind a tiny break-glass frame. Cal objects. | Insert extreme close-up → two-shot |
 | 00:09.2–00:13.1 | Nora: "This is an emergency." She loads the fork into MATER-8. | Medium two-shot, anticipation → gesture |
-| 00:13.1–00:16.3 | One perfect fork duplicates. Cal: "Great. Stop." | Object insert → Cal reaction CU |
+| 00:13.1–00:16.3 | One perfect fork duplicates. Cal: "Good. Stop." | Object insert → Cal reaction CU |
 | 00:16.3–00:20.8 | Terminal scans dirty kitchen: HOUSEHOLD MODE / UTENSIL DEFICIT: 384. Nora slowly looks at Cal. | OTS terminal → Nora reaction CU |
 | 00:20.8–00:27.5 | Rule-of-three escalation in one room: forks eject into a toaster, lamp shade, and Cal's slipper; then machine-gun multiplication. | Hard cuts + repeated framing, 24fps flying props |
 | 00:27.5–00:31.4 | Forkling crawls from a drawer. Cal: "That one moved." | Absurd insert → reaction CU |
@@ -53,7 +53,7 @@ One apartment kitchen only. Palette: beige plaster, brown cabinetry, dusty orang
 2. NORA — "You said we needed one clean fork."
 3. CAL — "That's the emergency fork."
 4. NORA — "This is an emergency."
-5. CAL — "Great. Stop."
+5. CAL — "Good. Stop."
 6. CAL — "Nora. Why does it say three hundred eighty-four?"
 7. NORA — "Apparently we live aggressively."
 8. CAL — "That one moved."
