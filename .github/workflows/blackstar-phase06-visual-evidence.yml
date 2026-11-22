@@ -1,0 +1,43 @@
+name: BLACKSTAR Phase 06 artifact visual evidence
+on:
+  push:
+    branches: [blackstar/phase06-poc]
+    paths:
+      - '.github/workflows/blackstar-phase06-visual-evidence.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  evidence:
+    if: github.ref == 'refs/heads/blackstar/phase06-poc'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Retrieve the original successful artifact
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: '44987343061'
+          name: blackstar-phase06-spike-44987343061
+          path: evidence
+      - name: Reconcile benchmark and emit original stills for visual review
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import pathlib, json, hashlib, base64
+          root=pathlib.Path("evidence")
+          report=json.loads((root/"benchmark.json").read_text())
+          assert report["status"]=="automated_checks_passed"
+          assert report["environment"]["revision"]=="d29490365b8af1416169a372b3e3871ca663b5a1"
+          print("ORIGINAL_BENCHMARK "+json.dumps(report,separators=(",",":")))
+          for aspect in ("portrait","landscape"):
+              for t in ("0","2.5","4","5.5"):
+                  path=root/(aspect+"-stills")/("t_"+t+".jpg")
+                  data=path.read_bytes()
+                  assert data.startswith(b"\xff\xd8") and 0<len(data)<1_000_000
+                  name=aspect+"-"+t
+                  encoded=base64.b64encode(data).decode("ascii")
+                  print("FRAME_META "+name+" "+str(len(data))+" "+hashlib.sha256(data).hexdigest())
+                  for i in range(0,len(encoded),2048):
+                      print("FRAME_CHUNK "+name+" "+str(i//2048)+" "+encoded[i:i+2048])
+          PY
