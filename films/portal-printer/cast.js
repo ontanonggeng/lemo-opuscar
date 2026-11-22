@@ -128,6 +128,9 @@ export function kip(o={}){
   eye(-23,-643,24,27,{lid,look,pupil:4.3,skin:P.skinK,lw:6,jitter:jit*.25});
   eye(19,-644,24,27,{lid:lid*.6,look,pupil:4.3,skin:P.skinK,lw:6,jitter:jit*.25});
  }
+ if(o.ice){
+  for(const xx of [-38,-20,2,22,38]) shape([[xx,-670],[xx+7,-692],[xx+13,-669]],{fill:'#f3eee4',lw:3});
+ }
  brow(-24,-682,36,.28+panic*.18,6);brow(20,-682,36,-.22-panic*.12,6);
  // long nose
  shape(spline([[-1,-644],[13,-616],[4,-603],[-8,-610]]),{fill:P.skinKs,lw:4});
