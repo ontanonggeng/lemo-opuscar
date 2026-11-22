@@ -49,7 +49,7 @@ export function parcel(x,y,s=1,{damage=0,slime=0}={}){
  }
  pop();
 }
-export function printer(x,y,s=1,{screen='READY',paper=0,shake=0,t=0}={}){
+export function printer(x,y,s=1,{screen='READY',paper=0,paperText='OHIO',shake=0,t=0}={}){
  push();translate(x+(shake?Math.sin(Math.floor(t*24)*3.7)*shake:0),y);scale(s);
  // wheeled battered cart
  shape(rr(-180,-185,360,230,18),{fill:WCOL.printer,lw:7,shade:()=>shade([[55,-185],[180,-185],[180,45],[78,45]],WCOL.printerS)});
@@ -63,7 +63,7 @@ export function printer(x,y,s=1,{screen='READY',paper=0,shake=0,t=0}={}){
  if(paper>0){
   const L=lerp(0,100,paper);
   shape(rr(-95,-15,190,L,4),{fill:WCOL.cream,lw:4});
-  if(L>55){text('SHIP TO: OHIO',0,27,{font:'800 16px "VT323"',fill:INK});stroke([[-72,45],[68,45]],2.5);}
+  if(L>55){text(paperText==='RETURN'?'RETURN TO SENDER':'SHIP TO: '+paperText,0,27,{font:'800 16px "VT323"',fill:INK});stroke([[-72,45],[68,45]],2.5);}
  }
  // dents / tape repair
  stroke([[-156,-30],[-142,-15],[-151,1]],4,{line:'#383d3d'});
