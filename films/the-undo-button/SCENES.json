@@ -1,0 +1,178 @@
+{
+  "title": "The Undo Button",
+  "slug": "the-undo-button",
+  "duration_seconds": 44,
+  "fps": 24,
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "language": "en-US"
+  },
+  "source": "Original BLACKSTAR sitcom short",
+  "mastering": {
+    "target_lufs": -14,
+    "true_peak_db": -1
+  },
+  "reference_assets": {
+    "brand": "brand/blackstar/v5",
+    "rae_design": "original-code-drawn",
+    "loop_design": "original-code-drawn",
+    "rae_voice": "af_heart",
+    "loop_voice": "am_michael"
+  },
+  "shots": [
+    {
+      "id": "S01",
+      "start": 0,
+      "end": 2.2,
+      "framing": "Macro insert / medium whip cut",
+      "action": "Coffee tips over a keyboard. Rae hits UNDO. Liquid pulls back into the mug in a physically coherent reverse motion. No title card.",
+      "dialogue": [],
+      "sfx": [
+        "cup scrape",
+        "liquid reverse suction"
+      ]
+    },
+    {
+      "id": "S02",
+      "start": 2.2,
+      "end": 6.2,
+      "framing": "Two-shot reaction",
+      "action": "Rae watches the perfectly full mug, then LOOP's quiet indicator. Facial reaction followed by an unhurried reply.",
+      "dialogue": [
+        {
+          "speaker": "RAE",
+          "text": "Okay. That's useful.",
+          "at": 2.2
+        },
+        {
+          "speaker": "LOOP",
+          "text": "It undoes mistakes.",
+          "at": 4.2
+        }
+      ]
+    },
+    {
+      "id": "S03",
+      "start": 6.2,
+      "end": 8,
+      "framing": "Phone insert, then Ellis medium",
+      "action": "Phone shows an embarrassing sent message addressed to Boss: LOVE YOU. Rae raises the remote.",
+      "dialogue": [
+        {
+          "speaker": "RAE",
+          "text": "Even that text to my boss?",
+          "at": 6.25
+        }
+      ]
+    },
+    {
+      "id": "S04",
+      "start": 8,
+      "end": 15,
+      "framing": "Extreme close-up then reaction",
+      "action": "Rae taps UNDO at 0:08. Phone shows MESSAGE UNSENT; a workplace card then changes to APPLICATION REVOKED. First collateral damage is visible around 0:08–0:10, and the comic payoff is complete before 0:15.",
+      "dialogue": [
+        {
+          "speaker": "LOOP",
+          "text": "Text gone. Also your job.",
+          "at": 9.1
+        },
+        {
+          "speaker": "RAE",
+          "text": "What?",
+          "at": 13.7
+        }
+      ]
+    },
+    {
+      "id": "S05",
+      "start": 15,
+      "end": 22.5,
+      "framing": "Repeated angle matched across time change",
+      "action": "Rae slaps UNDO again. Jump cut: blinds close, clock rewinds, his clothing changes to pajamas, and an alarm goes off. Show the transformation as deliberate stepping on twos.",
+      "dialogue": [
+        {
+          "speaker": "RAE",
+          "text": "Undo that!",
+          "at": 15.2
+        },
+        {
+          "speaker": "LOOP",
+          "text": "Good morning. Again.",
+          "at": 19.25
+        }
+      ],
+      "sfx": [
+        "rewind tick",
+        "alarm"
+      ]
+    },
+    {
+      "id": "S06",
+      "start": 22.5,
+      "end": 29.2,
+      "framing": "Ellis close-up; remote insert",
+      "action": "He stares at the remote. The cup hovers on the edge. Annoyed, Rae addresses the remote itself.",
+      "dialogue": [
+        {
+          "speaker": "RAE",
+          "text": "Undo the dumbest thing I bought today.",
+          "at": 23.2
+        }
+      ]
+    },
+    {
+      "id": "S07",
+      "start": 29.2,
+      "end": 35.3,
+      "framing": "Remote insert / Ellis reaction",
+      "action": "Remote screen selects PURCHASE: UNDO REMOTE. The object disappears. LOOP's indicator stays on (LOOP is a separate smart-home system).",
+      "dialogue": [
+        {
+          "speaker": "LOOP",
+          "text": "Your purchase has been reversed.",
+          "at": 29.45
+        }
+      ],
+      "sfx": [
+        "power-down pop"
+      ]
+    },
+    {
+      "id": "S08",
+      "start": 35.3,
+      "end": 40.4,
+      "framing": "Exact matching composition to S01",
+      "action": "Original coffee spill reappears, flowing across the keyboard. A phone notification from BOSS reads LOVE YOU TOO. Focus on the phone, then Rae.",
+      "dialogue": [],
+      "sfx": [
+        "cup spill",
+        "phone buzz"
+      ]
+    },
+    {
+      "id": "S09",
+      "start": 40.4,
+      "end": 44,
+      "framing": "Locked reaction close-up",
+      "action": "Rae looks at the ruined keyboard, then at the phone. No music under the pause. Hard cut immediately after his line.",
+      "dialogue": [
+        {
+          "speaker": "RAE",
+          "text": "I liked the spill better.",
+          "at": 40.85
+        }
+      ],
+      "sfx": [
+        "room tone"
+      ]
+    }
+  ],
+  "production_status": "rendered_candidate_pending_artistic_QA",
+  "cast": [
+    "RAE",
+    "LOOP"
+  ],
+  "voice_engine": "Kokoro offline"
+}

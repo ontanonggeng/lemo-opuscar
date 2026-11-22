@@ -1,0 +1,82 @@
+[
+  {
+    "id": "01",
+    "who": "RAE",
+    "voice": "af_heart",
+    "text": "Okay. That's useful.",
+    "at": 2.2,
+    "speed": 1.08
+  },
+  {
+    "id": "02",
+    "who": "LOOP",
+    "voice": "am_michael",
+    "text": "It undoes mistakes.",
+    "at": 4.2,
+    "speed": 1
+  },
+  {
+    "id": "03",
+    "who": "RAE",
+    "voice": "af_heart",
+    "text": "Even that text to my boss?",
+    "at": 6.25,
+    "speed": 1.12
+  },
+  {
+    "id": "04",
+    "who": "LOOP",
+    "voice": "am_michael",
+    "text": "Text gone. Also your job.",
+    "at": 9.1,
+    "speed": 1.08
+  },
+  {
+    "id": "05",
+    "who": "RAE",
+    "voice": "af_heart",
+    "text": "What?",
+    "at": 13.7,
+    "speed": 1
+  },
+  {
+    "id": "06",
+    "who": "RAE",
+    "voice": "af_heart",
+    "text": "Undo that!",
+    "at": 15.2,
+    "speed": 1.08
+  },
+  {
+    "id": "07",
+    "who": "LOOP",
+    "voice": "am_michael",
+    "text": "Good morning. Again.",
+    "at": 19.25,
+    "speed": 1
+  },
+  {
+    "id": "08",
+    "who": "RAE",
+    "voice": "af_heart",
+    "text": "Undo the dumbest thing I bought today.",
+    "at": 23.2,
+    "speed": 1.07
+  },
+  {
+    "id": "09",
+    "who": "LOOP",
+    "voice": "am_michael",
+    "text": "Your purchase has been reversed.",
+    "at": 29.45,
+    "speed": 1
+  },
+  {
+    "id": "10",
+    "who": "RAE",
+    "voice": "af_heart",
+    "text": "I liked the spill better.",
+    "at": 40.85,
+    "speed": 1.02
+  }
+]
