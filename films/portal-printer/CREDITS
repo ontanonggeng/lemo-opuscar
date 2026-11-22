@@ -1,0 +1,21 @@
+BLACKSTAR — We Just Needed One Shipping Label
+
+Animation engine and style grammar:
+- Lemo-Opuscar, Sci-Fi Sitcom Toon source and vector renderer. Used as the production engine under the repository's licence. No demo characters, story, dialogue, device design, world sequence, shots, music, or ending are reused.
+
+Voice:
+- Kokoro TTS / kokoro-onnx, offline voice generation. Voices: af_nicole (Marn), am_eric (Kip). See upstream package/model licences included by the Lemo-Opuscar voice tier.
+
+Speech verification:
+- faster-whisper, used locally in GitHub Actions only to verify generated dialogue and produce word timing data.
+
+Fonts:
+- Baloo 2 — SIL Open Font License 1.1.
+- VT323 — SIL Open Font License 1.1.
+Fetched by styles/scifi-toon/demo/tools/fonts.sh from Google Fonts.
+
+Music and sound:
+- Original score and sound effects synthesized in code for this film. No stock music, commercial samples, or generated music model output.
+
+Brand:
+- BLACKSTAR v5 assets from this repository, owned/provided by the project owner.
