@@ -1,0 +1,62 @@
+name: BLACKSTAR Phase 06 renderer spike
+on:
+  push:
+    branches: [blackstar/phase06-poc]
+    paths:
+      - '.github/workflows/blackstar-phase06-spike.yml'
+      - 'films/blackstar-render-spike/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: blackstar-phase06-spike
+  cancel-in-progress: false
+jobs:
+  spike:
+    if: github.ref == 'refs/heads/blackstar/phase06-poc'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash -leo pipefail {0}
+    env:
+      LEMO_ANGLE: swiftshader
+      LEMO_COLOR: bt709
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: FFmpeg 7.1
+        uses: mamba-org/setup-micromamba@v3
+        with:
+          environment-name: media
+          create-args: ffmpeg=7.1
+      - name: Install Lemo core
+        run: |
+          sh plugin/skills/lemo-opuscar/scripts/setup.sh deps
+          node node_modules/playwright-core/cli.js install-deps chromium
+      - name: Verify source syntax
+        run: |
+          node --check films/blackstar-render-spike/scene.js
+          node --check films/blackstar-render-spike/rig.js
+          python3 -m py_compile films/blackstar-render-spike/build.py
+      - name: Render both aspects and verify media
+        run: sh films/blackstar-render-spike/build.sh
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: blackstar-phase06-spike-${{ github.run_id }}
+          path: |
+            films/blackstar-render-spike/out/portrait.mp4
+            films/blackstar-render-spike/out/landscape.mp4
+            films/blackstar-render-spike/out/benchmark.json
+            films/blackstar-render-spike/out/*-stills/*.jpg
+          if-no-files-found: warn
+          retention-days: 7
