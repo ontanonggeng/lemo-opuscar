@@ -35,7 +35,7 @@ export function warehouse(t,{alarm=0}={}){
  text('NIGHT SHIPPING',1222,-43,{font:'800 27px "Baloo 2"',fill:WCOL.cream});
  text('BAY 04',1222,-8,{font:'400 22px "VT323"',fill:'#d6c780'});
 }
-export function parcel(x,y,s=1,{damage=0,slime=0}={}){
+export function parcel(x,y,s=1,{damage=0,slime=0,label=''}={}){
  push();translate(x,y);scale(s);
  shape(rr(-110,-110,220,150,10),{fill:WCOL.box,lw:7,shade:()=>shade([[22,-110],[110,-110],[110,40],[44,40]],WCOL.boxS)});
  stroke([[-110,-49],[110,-49]],5);stroke([[0,-109],[0,-50]],5);
@@ -46,6 +46,12 @@ export function parcel(x,y,s=1,{damage=0,slime=0}={}){
  }
  if(slime){
   for(const [dx,len] of [[-68,35],[28,50],[72,27]])shape(spline([[dx-12,-112],[dx+13,-112],[dx+10,-112+len*.6],[dx,-112+len],[dx-9,-112+len*.6]]),{fill:'#b5d83a',lw:4});
+ }
+ if(label){
+  shape(rr(-72,-31,144,54,5),{fill:WCOL.cream,lw:4,shade:()=>shade([[34,-31],[72,-31],[72,23],[28,23]],'#cbb994')});
+  text(label==='RETURN'?'RETURN':'SHIP: OHIO',0,-8,{font:'800 14px "VT323"',fill:INK});
+  stroke([[-52,6],[50,6]],2.2,{line:INK,boil:.2});
+  for(let i=0;i<7;i++)stroke([[-45+i*14,12],[-45+i*14,20]],1.8,{line:INK,boil:.1});
  }
  pop();
 }
