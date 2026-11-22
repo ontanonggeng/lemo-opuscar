@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "0.1.0",
+  "fps": 24,
+  "characterFps": 12,
+  "durationFrames": 144,
+  "beats": [
+    {
+      "frame": 0,
+      "id": "hold"
+    },
+    {
+      "frame": 36,
+      "id": "lift"
+    },
+    {
+      "frame": 84,
+      "id": "reaction"
+    },
+    {
+      "frame": 108,
+      "id": "settle"
+    }
+  ]
+}
