@@ -45,7 +45,7 @@ def printer():
         i=int(k*.048*SR);z=click(.038);y[i:i+len(z)]+=z*.6
     return y
 def squish():
-    return sweep(.25,220,85)*.18+noise(.22,18)*.07
+    return sweep(.25,220,85)*.18+noise(.25,18)*.07
 for i,e in enumerate(tl["events"]):
     typ,t=e["type"],e["t"]
     if typ=="portal_open":overlay(portal_open(),t,.23)
