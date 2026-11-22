@@ -24,18 +24,24 @@ function modelKip(t){
  kip({x:760,y:1800,s:.66,face:-1,t,panic:.5,gesture:.25,lid:.3,look:[-.5,.1],mouth:{o:.12,w:.85,sm:-.4}});
 }
 function hook(t){
- cam(540,865,.88);
- warehouse(t);printer(540,900,.92,{screen:'ZONE ERROR',shake:2,t});
- portal(540,575,250,t,{open:1,kind:'frost'});parcel(540,1150,.8);sluglet(540,970,.8,t,{ice:1});
- marn({x:835,y:1460,s:.73,face:-1,t,lid:.55,look:[-.7,-.2],mouth:{o:0,w:.9,sm:-.2}});
- kip({x:210,y:1460,s:.70,face:1,t,panic:1,lid:.02,look:[.7,-.25],gesture:.85,mouth:{o:.75,w:1.2,sm:-.9}});
+ cam(540,975,1.0);
+ warehouse(t);
+ printer(540,910,.98,{screen:'ZONE ERROR',shake:2.5,t});
+ portal(540,575,235,t,{open:1,kind:'frost'});
+ parcel(540,1170,.9);
+ sluglet(540,985,.95,t,{ice:1});
+ marn({x:825,y:1610,s:.91,face:-1,t,lid:.55,look:[-.8,-.25],brow:-.25,mouth:{o:0,w:.88,sm:-.22}});
+ kip({x:230,y:1610,s:.87,face:1,t,panic:1.15,lid:0,look:[.85,-.3],gesture:1,mouth:{o:.9,w:1.28,sm:-1}});
 }
 function signature(t){
- cam(540,900,.76);
- warehouse(t);printer(540,880,.95,{screen:'DELIVERED',paper:0,t});
- portal(540,660,300,t,{open:.92,kind:'office'});parcel(540,1070,.77,{damage:0});
- marn({x:855,y:1510,s:.78,face:-1,t,lid:.56,look:[-.6,-.1],hold:'label',mouth:{o:0,w:.9,sm:-.16}});
- kip({x:190,y:1510,s:.75,face:1,t,panic:.5,lid:.16,look:[.7,-.1],gesture:.3,mouth:{o:.15,w:1,sm:-.45}});
+ cam(540,1010,.96);
+ warehouse(t);
+ printer(540,930,1.0,{screen:'DELIVERED',paper:0,t});
+ portal(540,700,260,t,{open:.9,kind:'office'});
+ // parcel already lifting into the aperture; characters frame the action rather than sitting below it
+ parcel(540,1115,.88,{damage:0});
+ marn({x:825,y:1630,s:.91,face:-1,t,lid:.52,look:[-.8,-.15],gesture:.42,mouth:{o:0,w:.9,sm:-.18}});
+ kip({x:230,y:1630,s:.88,face:1,t,panic:.7,lid:.08,look:[.8,-.15],gesture:.62,mouth:{o:.25,w:1.05,sm:-.55}});
 }
 window.render=t=>{frame(t,{amp:1.7});S.lwScale=1; if(mode==='marn')modelMarn(t);else if(mode==='kip')modelKip(t);else if(mode==='signature')signature(t);else hook(t);};
 window.READY=true;
