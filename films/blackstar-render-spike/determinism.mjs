@@ -19,6 +19,7 @@ let session;
 function save(){fs.writeFileSync(out,JSON.stringify(report,null,2)+'\n');}
 try {
   session=await openDemo(dir,size);
+  report.contextPolicy=await session.page.evaluate(()=>window.CANVAS_POLICY);
   for(const t of times) reference[t]=await sample(session.page,t);
   report.reference=reference;
   for(const t of [...times].reverse()){
@@ -27,6 +28,7 @@ try {
   }
   await session.browser.close();session=null;
   session=await openDemo(dir,size);
+  report.freshContextPolicy=await session.page.evaluate(()=>window.CANVAS_POLICY);
   for(const t of [...times].reverse()){
     const hash=await sample(session.page,t);
     report.freshBrowser[t]={hash,match:hash===reference[t]};

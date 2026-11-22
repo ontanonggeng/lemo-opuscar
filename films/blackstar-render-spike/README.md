@@ -18,3 +18,6 @@ Automated: repeated-frame decoded-pixel hash against out-of-order capture, nativ
 
 ## Determinism regression
 Run 44986879493 failed on the first portrait decoded-JPEG comparison. The scene now resets Canvas state and explicitly fills the entire opaque framebuffer before drawing. QA preserves the strict JPEG check and adds SHA-256 comparisons of raw Canvas RGBA bytes in the same and fresh browser, including reverse-order playback. Both checks must pass. Root cause is a hypothesis until the retry demonstrates the fix.
+
+## Second regression (run 44987115587)
+All four decoded JPEG comparisons passed after explicitly clearing the framebuffer. Raw Canvas RGBA comparisons failed (same page 2/4, new browser 0/4). The next revision requests an opaque, sRGB, readback-oriented Canvas 2D context before calling the native toon initializer, so the same policy applies to stills, video, and diagnostic readback. This is a targeted hypothesis about adaptive rasterization, not a confirmed root cause. Both exact comparisons remain mandatory. Context attributes are logged for diagnosis.

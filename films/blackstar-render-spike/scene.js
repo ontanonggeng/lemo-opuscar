@@ -1,7 +1,15 @@
 import { init, frame, shape, rect, rr, ell, fillOnly, stroke, dot, scale, S, g } from '/styles/scifi-toon/demo/toon.js';
 import { drawActor } from './rig.js';
 const canvas=document.getElementById('stage');
-canvas.width=innerWidth;canvas.height=innerHeight;init(canvas);
+canvas.width=innerWidth;canvas.height=innerHeight;
+// Choose an opaque, readback-oriented 2D context before native toon init.
+// Chromium may otherwise switch GPU/CPU rasterization after repeated getImageData.
+// Apply the same context policy to video capture, screenshots and hash tests.
+const stableContext=canvas.getContext('2d',{alpha:false,willReadFrequently:true,colorSpace:'srgb'});
+if(!stableContext||init(canvas)!==stableContext)throw Error('Canvas context initialization mismatch');
+const attrs=stableContext.getContextAttributes();
+if(attrs.alpha!==false||attrs.willReadFrequently!==true||attrs.colorSpace!=='srgb')throw Error('Unexpected Canvas raster policy');
+window.CANVAS_POLICY=attrs;
 const timeline=await fetch('./timeline.json').then(r=>{if(!r.ok)throw Error('Timeline missing');return r.json()});
 if(timeline.durationFrames!==144||timeline.fps!==24||timeline.characterFps!==12)throw Error('Invalid fixture timeline');
 const wm=new Image();wm.src='./out/corner-watermark.png';await wm.decode();
