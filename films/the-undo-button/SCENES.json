@@ -1,0 +1,172 @@
+{
+  "title": "The Undo Button",
+  "slug": "the-undo-button",
+  "duration_seconds": 44,
+  "fps": 24,
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "language": "en-US"
+  },
+  "source": "Original BLACKSTAR sitcom short",
+  "mastering": {
+    "target_lufs": -14,
+    "true_peak_db": -1
+  },
+  "reference_assets": {
+    "brand": "brand/blackstar/v5",
+    "ellis": "REQUIRED_FROM_EPISODE_01",
+    "pact_voice": "REQUIRED_FROM_EPISODE_01",
+    "ellis_voice": "REQUIRED_FROM_EPISODE_01"
+  },
+  "shots": [
+    {
+      "id": "S01",
+      "start": 0,
+      "end": 2.2,
+      "framing": "Macro insert / medium whip cut",
+      "action": "Coffee tips over a keyboard. Ellis hits UNDO. Liquid pulls back into the mug in a physically coherent reverse motion. No title card.",
+      "dialogue": [],
+      "sfx": [
+        "cup scrape",
+        "liquid reverse suction"
+      ]
+    },
+    {
+      "id": "S02",
+      "start": 2.2,
+      "end": 6.2,
+      "framing": "Two-shot reaction",
+      "action": "Ellis watches the perfectly full mug, then Pact's quiet indicator. Facial reaction followed by an unhurried reply.",
+      "dialogue": [
+        {
+          "speaker": "ELLIS",
+          "text": "Okay. That's useful.",
+          "at": 2.2
+        },
+        {
+          "speaker": "PACT",
+          "text": "It undoes mistakes.",
+          "at": 4.1
+        }
+      ]
+    },
+    {
+      "id": "S03",
+      "start": 6.2,
+      "end": 9.2,
+      "framing": "Phone insert, then Ellis medium",
+      "action": "Phone shows an embarrassing sent message addressed to Boss: LOVE YOU. Ellis raises the remote.",
+      "dialogue": [
+        {
+          "speaker": "ELLIS",
+          "text": "Even that text to my boss?",
+          "at": 6.3
+        }
+      ]
+    },
+    {
+      "id": "S04",
+      "start": 9.2,
+      "end": 15,
+      "framing": "Extreme close-up then reaction",
+      "action": "UNDO tapped. Phone shows MESSAGE UNSENT; a workplace card changes to APPLICATION REVOKED. Ellis freezes. The first clear payoff is fully visible before 15 seconds.",
+      "dialogue": [
+        {
+          "speaker": "PACT",
+          "text": "Text removed. Job application removed, too.",
+          "at": 10
+        },
+        {
+          "speaker": "ELLIS",
+          "text": "What?",
+          "at": 14
+        }
+      ]
+    },
+    {
+      "id": "S05",
+      "start": 15,
+      "end": 22.5,
+      "framing": "Repeated angle matched across time change",
+      "action": "Ellis slaps UNDO again. Jump cut: blinds close, clock rewinds, his clothing changes to pajamas, and an alarm goes off. Show the transformation as deliberate stepping on twos.",
+      "dialogue": [
+        {
+          "speaker": "ELLIS",
+          "text": "Undo that!",
+          "at": 15.2
+        },
+        {
+          "speaker": "PACT",
+          "text": "Good morning. Again.",
+          "at": 19.2
+        }
+      ],
+      "sfx": [
+        "rewind tick",
+        "alarm"
+      ]
+    },
+    {
+      "id": "S06",
+      "start": 22.5,
+      "end": 29.2,
+      "framing": "Ellis close-up; remote insert",
+      "action": "He stares at the remote. The cup hovers on the edge. Annoyed, Ellis addresses the remote itself.",
+      "dialogue": [
+        {
+          "speaker": "ELLIS",
+          "text": "Undo the dumbest decision I made today.",
+          "at": 23.2
+        }
+      ]
+    },
+    {
+      "id": "S07",
+      "start": 29.2,
+      "end": 35.3,
+      "framing": "Remote insert / Ellis reaction",
+      "action": "Remote screen selects PURCHASE: UNDO REMOTE. The object disappears. Pact's indicator stays on (Pact is a separate smart-home system).",
+      "dialogue": [
+        {
+          "speaker": "PACT",
+          "text": "Your purchase of the remote has been reversed.",
+          "at": 29.4
+        }
+      ],
+      "sfx": [
+        "power-down pop"
+      ]
+    },
+    {
+      "id": "S08",
+      "start": 35.3,
+      "end": 40.4,
+      "framing": "Exact matching composition to S01",
+      "action": "Original coffee spill reappears, flowing across the keyboard. A phone notification from BOSS reads LOVE YOU TOO. Focus on the phone, then Ellis.",
+      "dialogue": [],
+      "sfx": [
+        "cup spill",
+        "phone buzz"
+      ]
+    },
+    {
+      "id": "S09",
+      "start": 40.4,
+      "end": 44,
+      "framing": "Locked reaction close-up",
+      "action": "Ellis looks at the ruined keyboard, then at the phone. No music under the pause. Hard cut immediately after his line.",
+      "dialogue": [
+        {
+          "speaker": "ELLIS",
+          "text": "I liked the spill better.",
+          "at": 40.8
+        }
+      ],
+      "sfx": [
+        "room tone"
+      ]
+    }
+  ],
+  "production_status": "assets_pending"
+}
