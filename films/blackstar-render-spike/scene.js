@@ -37,7 +37,12 @@ window.EV=[];
 window.render=t=>{
   const f=Math.max(0,Math.min(timeline.durationFrames-1,Math.floor(t*timeline.fps+1e-6)));
   const q=Math.floor(f/2)/timeline.characterFps;
+  // Reset all Canvas state and paint every pixel before resampled vector shapes.
+  // Resampled corner vertices need not fully cover an antialiased framebuffer.
+  canvas.width=canvas.width;
   frame(f/timeline.fps);S.lwScale=1;
+  g.globalAlpha=1;g.globalCompositeOperation='source-over';
+  g.fillStyle='#83968a';g.fillRect(0,0,canvas.width,canvas.height);
   scale(2);
   room();bench(q);
   const lift=smooth((q-at('lift'))/1.4)*(1-.18*smooth((q-at('settle'))/.7));

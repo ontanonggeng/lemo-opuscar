@@ -45,6 +45,7 @@ jobs:
         run: |
           node --check films/blackstar-render-spike/scene.js
           node --check films/blackstar-render-spike/rig.js
+          node --check films/blackstar-render-spike/determinism.mjs
           python3 -m py_compile films/blackstar-render-spike/build.py
       - name: Render both aspects and verify media
         run: sh films/blackstar-render-spike/build.sh
@@ -58,5 +59,7 @@ jobs:
             films/blackstar-render-spike/out/landscape.mp4
             films/blackstar-render-spike/out/benchmark.json
             films/blackstar-render-spike/out/*-stills/*.jpg
+            films/blackstar-render-spike/out/*-repeat/*.jpg
+            films/blackstar-render-spike/out/*-determinism.json
           if-no-files-found: warn
           retention-days: 7

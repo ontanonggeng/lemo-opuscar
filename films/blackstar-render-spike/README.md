@@ -15,3 +15,6 @@ Outputs in out/: portrait.mp4, landscape.mp4, contact JPEGs, benchmark.json and 
 
 ## Scope
 Automated: repeated-frame decoded-pixel hash against out-of-order capture, native dimensions, H.264, yuv420p, exact 24 fps, 144 video frames, AAC audio, full decode, duration tolerance, and archive watermark SHA-256 recorded. Render timing measures only the picture capture/encode command, not hands-on production. Manual: verify character appearance, composition, contact and brand placement by viewing the assets. Pending: approved production models, verified new brand ZIP, actual dialogue, ASR, lip-sync, caption QA, long-form benchmark, publishing buffer. No automatic checks are claimed to be passed before a successful run.
+
+## Determinism regression
+Run 44986879493 failed on the first portrait decoded-JPEG comparison. The scene now resets Canvas state and explicitly fills the entire opaque framebuffer before drawing. QA preserves the strict JPEG check and adds SHA-256 comparisons of raw Canvas RGBA bytes in the same and fresh browser, including reverse-order playback. Both checks must pass. Root cause is a hypothesis until the retry demonstrates the fix.

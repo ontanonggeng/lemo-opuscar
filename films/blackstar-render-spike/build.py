@@ -39,11 +39,21 @@ try:
         a=out / (name+"-stills"); b=out / (name+"-repeat")
         cmd("node", "core/render/still.mjs", str(project), "0", "2.5", "4", "5.5", "--size", size, "--out", str(a))
         cmd("node", "core/render/still.mjs", str(project), "5.5", "4", "2.5", "0", "--size", size, "--out", str(b))
-        hashes={}
+        jpeg_matches = {}
         for t in ("0","2.5","4","5.5"):
             h1=hash_pixels(a / f"t_{t}.jpg");h2=hash_pixels(b / f"t_{t}.jpg")
-            if h1!=h2: raise ValueError(f"{name}: frame order mismatch at {t}")
-            hashes[t]=h1
+            jpeg_matches[t] = h1==h2
+        report["results"][name]={"jpeg_frame_matches":jpeg_matches,"manual_review":"not run"}
+        save()
+        print(name, "JPEG decoded-pixel matches", jpeg_matches, flush=True)
+        raw_report=out / (name+"-determinism.json")
+        result=subprocess.run(["node",str(project/"determinism.mjs"),str(project),str(width),str(height),str(raw_report)],cwd=root)
+        if raw_report.exists():
+            report["results"][name]["determinism"]=json.loads(raw_report.read_text())
+            save()
+        result.check_returncode()
+        # Do not waive the JPEG regression: both strict checks must pass.
+        if not all(jpeg_matches.values()): raise ValueError(f"{name}: JPEG frame order mismatch")
         raw=out / (name+"-picture.mp4"); final=out / (name+".mp4")
         start=time.perf_counter()
         cmd("node", "core/render/video.mjs", str(project), "--fps", "24", "--workers", "2", "--size", size, "--out", str(raw))
@@ -57,7 +67,8 @@ try:
         assert astream["codec_name"]=="aac", astream
         assert abs(float(details["format"]["duration"])-6)<=0.12, details
         cmd("ffmpeg","-v","error","-xerror","-i",str(final),"-f","null","-")
-        report["results"][name]={"automated_checks":"passed","frame_hashes":hashes,"capture_seconds":round(elapsed,3),"capture_fps":round(144/elapsed,3),"workers":2,"output_bytes":final.stat().st_size,"width":width,"height":height,"manual_review":"not run"}
+        report["results"][name].update({"automated_checks":"passed","capture_seconds":round(elapsed,3),"capture_fps":round(144/elapsed,3),"workers":2,"output_bytes":final.stat().st_size,"width":width,"height":height,"manual_review":"not run"})
+        print("BENCHMARK",name,json.dumps(report["results"][name]),flush=True)
         save()
     report["status"]="automated_checks_passed"
 except Exception as exc:
