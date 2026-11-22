@@ -1,0 +1,77 @@
+name: BLACKSTAR - Portal Printer look-dev
+
+on:
+  push:
+    branches:
+      - blackstar/short-portal-printer
+    paths:
+      - 'films/portal-printer/**'
+      - '.github/workflows/blackstar-portal-printer-look.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  look:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    defaults:
+      run:
+        shell: bash -leo pipefail {0}
+    env:
+      LEMO_ANGLE: swiftshader
+      PROJECT: films/portal-printer
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install renderer
+        run: |
+          sh plugin/skills/lemo-opuscar/scripts/setup.sh deps
+          node node_modules/playwright-core/cli.js install-deps chromium
+          sh styles/scifi-toon/demo/tools/fonts.sh
+
+      - name: Syntax
+        run: |
+          node --check "$PROJECT/cast.js"
+          node --check "$PROJECT/world.js"
+          node --check "$PROJECT/main.js"
+
+      - name: Render model sheets and styleframes from real drawing code
+        run: |
+          mkdir -p "$PROJECT/look"
+          node core/render/still.mjs "$PROJECT" 0.5 --q 'mode=marn' --out "$PROJECT/look" --prefix marn_ --size 1080x1920
+          node core/render/still.mjs "$PROJECT" 0.5 --q 'mode=kip' --out "$PROJECT/look" --prefix kip_ --size 1080x1920
+          node core/render/still.mjs "$PROJECT" 0.5 --q 'mode=hook' --out "$PROJECT/look" --prefix hook_ --size 1080x1920
+          node core/render/still.mjs "$PROJECT" 0.5 --q 'mode=signature' --out "$PROJECT/look" --prefix signature_ --size 1080x1920
+
+      - name: Build review sheet
+        run: |
+          .venv/bin/python - <<'PY'
+          from pathlib import Path
+          from PIL import Image,ImageDraw
+          D=Path("films/portal-printer/look")
+          files=[D/"marn_0.5.jpg",D/"kip_0.5.jpg",D/"hook_0.5.jpg",D/"signature_0.5.jpg"]
+          ims=[Image.open(x).convert("RGB") for x in files]
+          thumbs=[im.resize((270,480)) for im in ims]
+          sheet=Image.new("RGB",(540,1020),"#d9d2c4");dr=ImageDraw.Draw(sheet)
+          labels=["MARN MODEL","KIP MODEL","S01 HOOK","S09 SIGNATURE"]
+          for i,(im,lab) in enumerate(zip(thumbs,labels)):
+              x=(i%2)*270;y=(i//2)*510
+              sheet.paste(im,(x,y));dr.text((x+8,y+484),lab,fill="#17121f")
+          sheet.save(D/"look-sheet.jpg",quality=94)
+          PY
+
+      - name: Upload look-dev
+        uses: actions/upload-artifact@v4
+        with:
+          name: Portal-Printer-look-${{ github.run_id }}
+          path: films/portal-printer/look/*.jpg
+          retention-days: 14
