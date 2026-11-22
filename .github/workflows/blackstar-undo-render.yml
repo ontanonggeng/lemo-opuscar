@@ -1,0 +1,110 @@
+name: BLACKSTAR - The Undo Button (Kokoro + 2D render)
+
+on:
+  push:
+    branches:
+      - blackstar/short-the-undo-button
+    paths:
+      - 'films/the-undo-button/**'
+      - '.github/workflows/blackstar-undo-render.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: blackstar-undo-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  short:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 110
+    defaults:
+      run:
+        shell: bash -leo pipefail {0}
+    env:
+      LEMO_ANGLE: swiftshader
+      LEMO_COLOR: bt709
+      PROJECT: films/the-undo-button
+
+    steps:
+      - name: Checkout production branch
+        uses: actions/checkout@v4
+
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: FFmpeg 7.1
+        uses: mamba-org/setup-micromamba@v3
+        with:
+          environment-name: media
+          create-args: ffmpeg=7.1
+
+      - name: Install core renderer and offline Kokoro TTS
+        run: |
+          sh plugin/skills/lemo-opuscar/scripts/setup.sh deps voice
+          node node_modules/playwright-core/cli.js install-deps chromium
+          ffmpeg -version | head -1
+          .venv/bin/python --version
+
+      - name: Restore approved BLACKSTAR v5 assets
+        run: |
+          .venv/bin/python -m pip install --quiet 'numpy<3' pillow shapely cairosvg
+          python3 brand/blackstar/bootstrap.py
+          test -s brand/blackstar/v5/video/corner-watermark-white-512.png
+
+      - name: Syntax and project integrity
+        run: |
+          node --check "$PROJECT/scene.js"
+          .venv/bin/python -m py_compile "$PROJECT/assemble.py" "$PROJECT/verify.py"
+          .venv/bin/python - <<'PY'
+          import json,pathlib
+          d=pathlib.Path("films/the-undo-button")
+          s=json.loads((d/"SCENES.json").read_text())
+          l=json.loads((d/"lines.json").read_text())
+          assert s["duration_seconds"]==44 and len(s["shots"])==9
+          assert len(l)==10 and {x["who"] for x in l}=={"RAE","LOOP"}
+          assert all(x["voice"].startswith(("af_","am_")) for x in l)
+          print("PASS: original characters, 9 shots, offline Kokoro voice design")
+          PY
+
+      - name: Generate complete offline voices and original audio
+        run: |
+          mkdir -p "$PROJECT/out/raw"
+          .venv/bin/python core/tts/tts.py "$PROJECT/lines.json" "$PROJECT/out/raw"
+          .venv/bin/python "$PROJECT/assemble.py"
+
+      - name: Preflight animation frames
+        run: |
+          node core/render/still.mjs "$PROJECT" 0.5 7.5 13 20 32 41 --size 540x960
+
+      - name: Render 1080x1920 animated film and mux sound
+        run: |
+          node core/render/video.mjs "$PROJECT" --fps 24 --workers 3 --size 1080x1920 --out "$PROJECT/out/picture.mp4"
+          sh core/render/mux.sh "$PROJECT/out/picture.mp4" "$PROJECT/out/mix.wav" "$PROJECT/out/the-undo-button.mp4" 24 0
+
+      - name: Validate final streams and prepare contact sheet
+        run: |
+          .venv/bin/python "$PROJECT/verify.py"
+
+      - name: Upload MP4, subtitle, frames and QA
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BLACKSTAR-The-Undo-Button-${{ github.run_id }}
+          path: |
+            films/the-undo-button/out/*.mp4
+            films/the-undo-button/out/*.srt
+            films/the-undo-button/out/*.json
+            films/the-undo-button/out/contact-sheet.jpg
+            films/the-undo-button/out/sample_*.jpg
+          if-no-files-found: warn
+          retention-days: 14
