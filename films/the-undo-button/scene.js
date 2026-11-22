@@ -175,7 +175,7 @@ function deskMacro(t,ending=false){
  remote(382,548,1.32);
  if(!ending && t>.55 && t<1.72){
    const power=Math.sin(Math.PI*c((t-.55)/1.17));
-   for(let i=0;i<3;i++)o(384,543,24+i*17+power*9,23+i*17+power*9,C.teal,1);
+   for(let i=0;i<3;i++){const rx=25+i*16+power*9,ry=24+i*16+power*9;const ring=ell(384,543,rx,ry,32);line([...ring,ring[0]],2.2,i===1?C.ivory:C.teal)}
    for(let i=0;i<3;i++)line([[275+i*19,366],[260+i*19,350]],2,C.ivory);
  }
  if(ending)phoneReply();
@@ -220,12 +220,12 @@ function vanish(t){
  // The object disappears from the character's existing hand, preserving contact.
  remote(418,557,.94,z);
  if(t>29.2 && t<35.3){
-   r(215,118,267,91,12,C.screen,5);
-   txt('UNDO PURCHASE',349,151,16,C.ivory);
-   txt(z>.6?'REVERSED':'REMOTE / TODAY',349,180,15,z>.6?C.teal:C.gold);
+   r(18,122,194,83,11,C.screen,5);
+   txt('UNDO PURCHASE',115,150,13,C.ivory);
+   txt(z>.6?'REVERSED':'REMOTE / TODAY',115,178,13,z>.6?C.teal:C.gold);
  }
  if(z>.12 && z<.95){
-   o(418,557,15+z*40,18+z*43,C.teal,3);
+   const ring=ell(418,557,17+z*46,18+z*48,40);line([...ring,ring[0]],3,C.teal);
  }
 }
 function shot(t){
