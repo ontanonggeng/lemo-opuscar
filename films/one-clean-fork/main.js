@@ -74,8 +74,8 @@ function kitchen(t,{mess=.35,power=true}={}){
  fillOnly(rect(327,662,129,91),'#674a43',{boil:.3});
  // emergency fork frame on wall
  R(34,600,97,94,8,'#5f4a43',5);R(42,608,81,78,5,'#e7d2a8',3);
- text('BREAK',82,620,{font:'800 10px "Baloo 2"',fill:INK});
- text('FOR FORK',82,632,{font:'800 9px "Baloo 2"',fill:INK});
+ text('EMERGENCY',82,620,{font:'800 8px "Baloo 2"',fill:INK});
+ text('FORK',82,633,{font:'800 11px "Baloo 2"',fill:INK});
  fork(82,661,.55,.06);
  // MATER-8 sits as junk on the table
  mater(340,687,.72,{glow:power?.25:0,screen:power?'READY':'OFF',off:!power});
@@ -144,10 +144,12 @@ function load(t){
  mater(340,687,.72,{glow:.35+u*.6,lever:u,screen:u>.75?'COPY 1':'READY'});
 }
 function copyInsert(t){
- cam(340,686,3.05);kitchen(t,{mess:.4});
- const p=ss(seg(t,13.15,13.8));
- mater(340,687,.72,{glow:1,lever:1,screen:'COPY COMPLETE',units:'QTY 2'});
- fork(315-24*p,656,.42,-1.57);fork(365+24*p,656,.42,1.57);
+ cam(340,650,2.62);kitchen(t,{mess:.4});
+ const p=ss(seg(t,13.15,13.82));
+ mater(340,687,.72,{glow:1,lever:1,screen:p<.35?'COPYING':'COPY COMPLETE',units:p<.35?'QTY 1':'QTY 2'});
+ // One fork visibly becomes two above the slot; props move on ones.
+ const spread=44*p;
+ fork(340-spread,615,.62,-1.57-.15*p);fork(340+spread,615,.62,1.57+.15*p);
 }
 function calStop(t){
  cam(405,451,2.0);kitchen(t,{mess:.4});
@@ -192,13 +194,26 @@ function calMoved(t){
  cal(talkC(t,{x:404,y:844,s:.82,face:-1,nerv:1,look:[-.95,.1],brow:1.35,t:Q(t),armR:{h:[55,14],bend:32}}));
 }
 function plug(t){
- cam(270,510,1.1);kitchen(t,{mess:1,power:t<33.25});forkRain(t,26);
- const pull=ss(seg(t,32.25,33.0));
- nora(talkN(t,{x:182,y:842,s:.78,face:1,lid:.56,look:[.5,.2],t:Q(t)}));
- cal(talkC(t,{x:409,y:844,s:.82,face:-1,nerv:1,look:[-.8,.2],t:Q(t),armR:{h:[45-90*pull,50-5*pull],bend:35}}));
- // cable and plug move on ones
- stroke(spline([[395,715],[450,735],[500-100*pull,708]],false),6,{line:PAL.dark});
- R(493-100*pull,696,20,25,5,'#333139',4);
+ if(t<32.38){
+  cam(184,445,2.03);kitchen(t,{mess:1,power:true});forkRain(t,14);
+  nora(talkN(t,{x:183,y:842,s:.78,face:1,lid:.62,look:[.8,.05],brow:-.05,t:Q(t)}));
+  return;
+ }
+ // Physical action insert: Cal's hand anticipates, grabs, then pulls the plug out on ones.
+ cam(461,704,2.5);kitchen(t,{mess:1,power:t<33.25});
+ const grab=ss(seg(t,32.38,32.78)),pull=ss(seg(t,32.78,33.28));
+ stroke(spline([[375,695],[420,716],[487-82*pull,708]],false),7,{line:PAL.dark});
+ R(478-82*pull,695,22,28,5,'#333139',5);
+ R(501,688,24,44,5,'#5f5556',5);stroke([[507,699],[519,699],[519,721],[507,721]],3,{line:'#c9c2ae'});
+ // forearm enters from lower-right; fist closes around the plug before the pull.
+ shape(spline([[540,820],[500,805],[485-78*pull,725],[461-73*pull,714],[449-65*pull,734],[480,827]]),{fill:P.skinC,lw:7});
+ if(grab>.4){stroke([[462-70*pull,715],[476-72*pull,719]],4,{line:P.skinCs});}
+ if(t>=33.28){
+  // Return to the pair for the aftermath.
+  cam(270,510,1.1);kitchen(t,{mess:1,power:false});
+  nora({x:182,y:842,s:.78,face:1,lid:.58,look:[.5,.1],t:Q(t)});
+  cal({x:409,y:844,s:.82,face:-1,nerv:.25,look:[-.7,.1],t:Q(t)});
+ }
 }
 function silence(t){
  const z=lerp(1.05,1.16,seg(t,34.6,38.5));
@@ -216,7 +231,7 @@ function bowlInsert(t){
 }
 function massInsert(t){
  cam(340,686,3.0);kitchen(t,{mess:1,power:false});
- mater(340,687,.72,{off:false,glow:.55,screen:'MASS CONSERVATION',units:'DINNER → UTENSILS'});
+ mater(340,687,.72,{off:false,glow:.55,screen:'MASS = MASS',units:'NOODLES → FORKS'});
 }
 function calDinner(t){
  cam(404,449,2.05);kitchen(t,{mess:1,power:false});
@@ -233,7 +248,7 @@ function button(t){
  cal({x:405,y:844,s:.82,face:-1,nerv:.15,look:[-.5,.15],t:Q(t)});
  // empty bowl on table
  E(270,691,44,14,'#df6d51',5);shape(spline([[226,691],[314,691],[300,728],[240,728]]),{fill:'#d65f49',lw:6});
- const p=ss(seg(t,46.58,47.35));fork(270,120+p*555,.48,p*7);
+ const p=ss(seg(t,46.58,47.35));fork(270,118+p*565,.62,p*6);
  if(t>47.05)forkling(310,700,.48,t,{peek:1});
 }
 
