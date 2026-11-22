@@ -54,7 +54,7 @@
     {
       "id": "S03",
       "start": 6.2,
-      "end": 9.2,
+      "end": 8,
       "framing": "Phone insert, then Ellis medium",
       "action": "Phone shows an embarrassing sent message addressed to Boss: LOVE YOU. Ellis raises the remote.",
       "dialogue": [
@@ -67,20 +67,20 @@
     },
     {
       "id": "S04",
-      "start": 9.2,
+      "start": 8,
       "end": 15,
       "framing": "Extreme close-up then reaction",
-      "action": "UNDO tapped. Phone shows MESSAGE UNSENT; a workplace card changes to APPLICATION REVOKED. Ellis freezes. The first clear payoff is fully visible before 15 seconds.",
+      "action": "Ellis taps UNDO at 0:08. Phone shows MESSAGE UNSENT; a workplace card then changes to APPLICATION REVOKED. First collateral damage is visible around 0:08–0:10, and the comic payoff is complete before 0:15.",
       "dialogue": [
         {
           "speaker": "PACT",
           "text": "Text removed. Job application removed, too.",
-          "at": 10
+          "at": 9
         },
         {
           "speaker": "ELLIS",
           "text": "What?",
-          "at": 14
+          "at": 13.7
         }
       ]
     },
