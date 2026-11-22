@@ -1,0 +1,90 @@
+[
+  {
+    "id": "c01",
+    "who": "CAL",
+    "voice": "am_eric",
+    "speed": 1.12,
+    "text": "Why are there forks in the ceiling?",
+    "sub": "Why are there forks in the ceiling?"
+  },
+  {
+    "id": "n01",
+    "who": "NORA",
+    "voice": "af_nicole",
+    "speed": 0.88,
+    "text": "You said we needed one clean fork.",
+    "sub": "You said we needed one clean fork."
+  },
+  {
+    "id": "c02",
+    "who": "CAL",
+    "voice": "am_eric",
+    "speed": 1.1,
+    "text": "That's the emergency fork.",
+    "sub": "That's the emergency fork."
+  },
+  {
+    "id": "n02",
+    "who": "NORA",
+    "voice": "af_nicole",
+    "speed": 0.88,
+    "text": "This is an emergency.",
+    "sub": "This is an emergency."
+  },
+  {
+    "id": "c03",
+    "who": "CAL",
+    "voice": "am_eric",
+    "speed": 1.14,
+    "text": "Great. Stop.",
+    "sub": "Great. Stop."
+  },
+  {
+    "id": "c04",
+    "who": "CAL",
+    "voice": "am_eric",
+    "speed": 1.12,
+    "text": "Nora. Why does it say three hundred eighty-four?",
+    "sub": "Nora. Why does it say 384?"
+  },
+  {
+    "id": "n03",
+    "who": "NORA",
+    "voice": "af_nicole",
+    "speed": 0.88,
+    "text": "Apparently we live aggressively.",
+    "sub": "Apparently we live aggressively."
+  },
+  {
+    "id": "c05",
+    "who": "CAL",
+    "voice": "am_eric",
+    "speed": 1.1,
+    "text": "That one moved.",
+    "sub": "That one moved."
+  },
+  {
+    "id": "n04",
+    "who": "NORA",
+    "voice": "af_nicole",
+    "speed": 0.88,
+    "text": "Then it's not ours.",
+    "sub": "Then it's not ours."
+  },
+  {
+    "id": "c06",
+    "who": "CAL",
+    "voice": "am_eric",
+    "speed": 1.1,
+    "text": "Where did dinner go?",
+    "sub": "Where did dinner go?"
+  },
+  {
+    "id": "n05",
+    "who": "NORA",
+    "voice": "af_nicole",
+    "speed": 0.86,
+    "text": "We have utensils.",
+    "sub": "We have utensils."
+  }
+]
