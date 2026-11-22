@@ -42,41 +42,80 @@ function loop(t){
  pop()
 }
 function rae(x,y,s,t,emotion='flat',pajama=false){
- push();translate(x,y+Math.sin(qt(t)*2.1)*1.7);scale(s);
- o(1,7,61,11,'#433e4d',0);
- poly([[-45,-140],[-7,-141],[-9,-18],[-46,-18]],pajama?'#78809c':'#465d67');
- poly([[10,-142],[46,-141],[47,-19],[8,-18]],pajama?'#78809c':'#465d67');
- r(-55,-28,54,25,9,C.ink);r(7,-28,53,25,9,C.ink);
- curve([[-64,-298],[-38,-323],[37,-321],[70,-294],[60,-133],[-62,-132]],pajama?'#7c829e':C.gold,5);
- poly([[-61,-288],[-49,-300],[-37,-142],[-63,-141]],pajama?'#5b6282':C.gold2,1);
- poly([[32,-313],[58,-295],[59,-139],[31,-142]],pajama?'#636e8a':'#c28548',0);
- poly([[-22,-314],[0,-295],[25,-317],[24,-282],[-25,-283]],C.ivory,3);
- line([[0,-284],[0,-137]],4);for(let j=0;j<3;j++)o(1,-257+j*40,3,3,C.ink,1);
- const arm=emotion==='shock'?39:emotion==='panic'?53:0;
- poly(noodle([-58,-286],[-80,-211-arm],-20,29,22),pajama?'#777f9c':C.gold,4);
- poly(noodle([59,-287],[93,-211-arm],16,29,22),pajama?'#777f9c':C.gold,4);
- o(-80,-210-arm,14,18,C.skin,3);o(95,-210-arm,14,18,C.skin,3);
- r(-18,-365,37,52,8,C.skin2);
- curve([[-68,-395],[-72,-454],[-56,-492],[-14,-514],[39,-493],[65,-451],[59,-384],[40,-357],[-55,-358]],C.hair,6);
- curve([[-46,-465],[-32,-477],[30,-465],[49,-425],[39,-385],[-6,-369],[-43,-386]],C.skin,5);
- poly([[-43,-433],[-32,-406],[-32,-383],[-44,-393]],C.skin2,0);
- o(-47,-424,10,14,C.skin2,2);o(43,-418,9,14,C.skin2,2);
- curve([[-65,-462],[-51,-505],[-19,-515],[25,-504],[63,-473],[47,-454],[18,-465],[6,-480],[-12,-462],[-40,-445]],C.hair,5);
- poly([[-39,-489],[-14,-512],[13,-503],[10,-469],[-6,-457],[-22,-473]],C.hair2,0);
- for(const X of [-24,22]){
-   o(X,-420,19,20,C.white,4);
-   o(X+(emotion==='shock'?-6:1),-416,5,5,C.ink,1);
-   if(emotion==='sleepy')poly([[X-17,-439],[X+17,-439],[X+17,-425],[X-17,-425]],C.skin,0);
+ push();translate(x,y+Math.sin(qt(t)*1.6)*1.0);scale(s);
+ const speaking=mouth('RAE',t),talk=speaking>.1;
+ const alarm=emotion==='shock'||emotion==='panic',sleep=emotion==='sleepy';
+ const gesture=t>=2.2&&t<6.2?.4:t>=22.5&&t<29.2?.85:t>=40?.2:0;
+ // Grounded legs, shadow, two visibly separate shoes.
+ o(0,8,64,10,'#3c3544',0);
+ poly([[-51,-142],[-8,-142],[-12,-20],[-52,-18]],pajama?'#65788b':'#374f59',4);
+ poly([[11,-141],[49,-142],[49,-18],[10,-20]],pajama?'#69778d':'#405565',4);
+ poly([[-49,-134],[-32,-134],[-35,-26],[-49,-27]],'#2f4351',0);
+ r(-62,-29,59,27,11,'#262834',4);r(6,-29,60,27,11,'#262834',4);
+ // High shoulders/collar touch the head silhouette, rather than a floating neck.
+ r(-16,-371,33,34,10,C.skin2,3);
+ curve([[-72,-328],[-59,-350],[-24,-362],[30,-357],[62,-345],[75,-300],[66,-141],[-68,-139],[-78,-298]],pajama?'#73839c':C.gold,6);
+ poly([[-74,-313],[-63,-341],[-42,-347],[-48,-147],[-70,-148]],pajama?'#52667e':'#c18248',1);
+ poly([[33,-351],[65,-332],[66,-147],[39,-145]],pajama?'#596f89':'#b97845',1);
+ // Layered under-shirt and original asymmetric lapels.
+ curve([[-33,-357],[2,-339],[34,-356],[22,-308],[-26,-308]],'#f1e4c9',4);
+ poly([[-50,-343],[-19,-325],[-12,-294],[-41,-306]],'#f5c77c',3);
+ poly([[49,-343],[14,-326],[17,-304],[42,-313]],'#bd7a49',3);
+ line([[0,-305],[0,-143]],4,'#78513e');
+ for(let j=0;j<3;j++)o(0,-275+j*40,3,3,'#6e4e42',0);
+ poly([[-63,-170],[-31,-172],[-29,-148],[-64,-148]],'#b47b52',1);
+ // Sleeves and forearms have two joints, wrist, palm, and finger detail.
+ const rightUp=gesture*36+(alarm?27:0);
+ poly(noodle([-64,-333],[-94,-282],-14,38,31),pajama?'#718098':C.gold,5);
+ poly(noodle([-95,-281],[-97,-240],-8,26,16),C.skin,4);
+ poly(noodle([64,-333],[89,-277-rightUp],17,36,30),pajama?'#718098':C.gold,5);
+ poly(noodle([90,-276-rightUp],[113,-238-rightUp],-13,24,16),C.skin,4);
+ r(-109,-251,24,17,7,pajama?'#5a6c81':'#b57845',3);
+ r(100,-252-rightUp,26,15,6,pajama?'#5a6c81':'#b57845',3);
+ o(-96,-235,15,18,C.skin,3);o(116,-235-rightUp,16,18,C.skin,3);
+ for(let i=0;i<3;i++){
+   line([[-106+i*7,-237],[-102+i*7,-226]],2,C.skin2);
+   line([[108+i*6,-237-rightUp],[109+i*6,-226-rightUp]],2,C.skin2);
  }
- let raised=emotion==='shock'||emotion==='panic';
- line([[-47,-453],[-29,-457-(raised?7:0)],[-12,-449]],4.8,C.hair);
- line([[7,-450],[27,-458-(raised?7:0)],[43,-448]],4.8,C.hair);
- poly([[-1,-422],[7,-397],[-4,-395]],C.skin2,1.5);
- let a=mouth('RAE',t);
- if(a>.1||raised){o(0,-387,12+3*a,5+15*a,'#663c45',3);if(a>.55)r(-9,-394,18,3,1,C.white,0)}
- else line([[-13,-388],[-3,-385],[12,-391]],3,'#663c45');
- o(47,-406,3,5,C.gold,1);r(37,-263,16,19,2,C.teal,2);
- pop()
+ // Hair and face are one articulated head with mild blinks, look changes and attitude.
+ const tilt=alarm?-.045:talk?Math.sin(qt(t)*4)*.025:t>40?.018:0;
+ push();translate(0,-421);rotate(tilt);translate(0,421);
+ curve([[-70,-398],[-74,-467],[-62,-500],[-31,-513],[12,-508],[51,-490],[69,-453],[62,-387],[35,-356],[-56,-357]],C.hair,6);
+ o(-61,-417,16,26,C.hair2,3);o(58,-412,12,22,C.hair,3);
+ // Cheeks, jaw, left hard cel-shadow and realistic ears.
+ curve([[-48,-465],[-32,-477],[28,-472],[49,-439],[45,-384],[23,-365],[-25,-363],[-49,-384]],C.skin,5);
+ poly([[-46,-437],[-35,-406],[-32,-373],[-44,-389]],C.skin2,0);
+ o(-49,-424,10,14,C.skin2,2);o(46,-421,10,14,C.skin2,2);
+ // Clear three-part original silhouette: side part, volume, and diagonal fringe.
+ curve([[-69,-469],[-56,-509],[-27,-515],[9,-506],[39,-494],[65,-476],[52,-448],[30,-458],[19,-479],[1,-459],[-21,-455],[-42,-443]],C.hair,5);
+ poly([[-44,-491],[-29,-511],[-10,-504],[6,-490],[-5,-469],[-29,-458]],C.hair2,1);
+ line([[-60,-463],[-47,-480],[-24,-486]],2,'#88708a');
+ // Heavy natural upper lids instead of permanently surprised googly eyes.
+ const eyeY=-420,look=t<6?7:t<15?-6:t<23?4:t<35?-4:2;
+ const blink=!alarm && (Math.floor(qt(t)*3.2)%44===0);
+ for(const X of [-24,21]){
+   o(X,eyeY,16.5,17.5,C.white,4);
+   o(X+look*.5,eyeY+4,4.8,5.5,C.ink,0);
+   if(!alarm){
+     poly([[X-17,-439],[X+17,-439],[X+16,-435+(sleep?13:6)],[X-16,-435+(sleep?13:6)]],C.skin,0);
+     line([[X-16,-434+(sleep?13:6)],[X+15,-434+(sleep?13:6)]],3.2,C.hair);
+   }
+   if(blink)line([[X-14,eyeY],[X+14,eyeY]],3.6,C.hair);
+ }
+ line([[-45,-451],[-29,-449-(alarm?9:0)],[-10,-451]],alarm?6:4.5,C.hair);
+ line([[6,-450],[26,-453-(alarm?9:0)],[43,-447]],alarm?6:4.5,C.hair);
+ // Nose is an organic wedge; mouth uses actual per-line Kokoro amplitude.
+ poly([[-1,-421],[8,-400],[-5,-399]],C.skin2,1.8);
+ o(-32,-392,8,4,'#bc7d63',0);o(27,-389,7,3,'#bc7d63',0);
+ if(talk){o(1,-384,13+speaking*3,3+speaking*13,'#603944',3);if(speaking>.55)r(-10,-390,20,4,1,C.ivory,0)}
+ else if(alarm){o(0,-386,10,13,'#573b42',3)}
+ else line([[-14,-389],[-4,-386],[6,-389],[13,-392]],3,'#68444b');
+ o(48,-404,3.5,5,C.gold,0);
+ pop();
+ // Tailored seam lines and tiny personal patch for silhouette continuity.
+ line([[-63,-164],[-63,-149],[58,-149]],2,'#926442');
+ r(39,-263,16,19,3,C.teal,2);
+ pop();
 }
 function apartment(t,{morning=false,panic=false,close=false}={}){
  bg(C.wall);
@@ -99,24 +138,46 @@ function apartment(t,{morning=false,panic=false,close=false}={}){
  loop(t);
 }
 function deskMacro(t,ending=false){
- bg(C.wall);poly([[0,0],[540,0],[540,240],[0,292]],C.ceiling,0);
- poly([[0,218],[540,203],[540,960],[0,960]],C.desk,0);
- for(let i=0;i<9;i++)line([[0,330+i*75],[540,306+i*75]],1.4,'#8c6156');
- poly([[54,517],[411,495],[478,689],[104,722]],C.ink,7);
- poly([[67,522],[410,503],[454,675],[110,704]],'#69717a',3);
- for(let row=0;row<4;row++)for(let j=0;j<10;j++)r(96+j*32+row*6,534+row*33-j*1.3,24,21,3,(row+j)%9===0?C.steel:C.ivory,2);
- o(188,419,103,24,'#69564e',0);o(276,376,35,49,C.ivory,5);
- r(148,301,130,122,26,C.ivory,6);
- poly([[161,314],[184,314],[191,416],[165,416]],'#cbb6a4',0);
- o(212,308,62,21,C.ink,4);o(212,305,54,12,C.coffee,1);
- let spill=ending?ease((t-35.3)/.9):1-ease((t-.55)/1.18);
- if(spill>.01){
-  curve([[272,363],[300+spill*68,362],[336+spill*112,397+spill*58],[296+spill*100,438+spill*90],[264,425]],C.coffee,2);
-  for(let i=0;i<8;i++)o(295+spill*(35+i*21),378+spill*((i%3)*41),4+spill*3,2+spill*2,C.coffee,0);
+ bg(C.wall);poly([[0,0],[540,0],[540,239],[0,292]],C.ceiling,0);
+ poly([[0,222],[540,207],[540,960],[0,960]],C.desk,0);
+ for(let i=0;i<9;i++)line([[0,337+i*72],[540,310+i*72]],1.4,'#916456');
+ // Proper keyboard body and keybed with dimensional shadow.
+ poly([[49,520],[414,497],[480,690],[101,725]],'#211e2d',8);
+ poly([[62,529],[405,506],[455,680],[114,711]],'#63717a',3);
+ poly([[62,530],[405,506],[407,525],[65,549]],'#9aa5a6',1);
+ for(let row=0;row<4;row++)for(let j=0;j<10;j++){
+  let xx=96+j*32+row*6, yy=536+row*34-j*1.3;
+  r(xx,yy,23,21,3,(row+j)%11===0?'#a8b8ba':C.ivory,2);
  }
- poly([[460,313],[540,289],[540,484],[438,469]],C.gold,4);
- poly(noodle([455,427],[376,538],-23,55,31),C.skin,4);o(378,537,25,24,C.skin,3);
- remote(380,544,1.35);
+ const shift=ending?0:.30*(1-ease((t-.62)/.95));
+ // Mug rotates back as coffee is unspilled. Handle stays attached to vessel.
+ push();translate(211,416);rotate(shift);translate(-211,-416);
+ o(191,421,100,21,'#6b514a',0);
+ o(276,361,36,46,C.ivory,6);
+ r(149,306,129,114,27,C.ivory,6);
+ poly([[162,322],[185,319],[190,418],[161,417]],'#c9b6a6',0);
+ o(213,314,61,19,C.ink,4);o(214,310,53,12,C.coffee,1);
+ o(226,307,16,4,'#845646',0);
+ pop();
+ const spill=ending?ease((t-35.3)/.85):1-ease((t-.52)/1.2);
+ if(spill>.015){
+   // Coherent flat liquid surface, tapered toward the keyboard, not a dark blob.
+   curve([[260,371],[291+spill*14,369],[322+spill*42,388+spill*22],[318+spill*56,423+spill*39],[280+spill*12,429],[251,404]],'#5b3630',2);
+   for(let i=0;i<12;i++){
+     const dx=292+spill*(13+(i%6)*18),dy=382+spill*((i%4)*27);
+     o(dx,dy,1.5+spill*3,1+spill*2,C.coffee,0);
+   }
+ }
+ // Rae's sleeve/forearm directly meets the physical red button.
+ poly([[461,312],[540,299],[540,479],[437,458]],C.gold,4);
+ poly(noodle([453,430],[372,536],-25,55,32),C.skin,4);
+ o(379,537,24,24,C.skin,3);
+ remote(382,548,1.32);
+ if(!ending && t>.55 && t<1.72){
+   const power=Math.sin(Math.PI*c((t-.55)/1.17));
+   for(let i=0;i<3;i++)o(384,543,24+i*17+power*9,23+i*17+power*9,C.teal,1);
+   for(let i=0;i<3;i++)line([[275+i*19,366],[260+i*19,350]],2,C.ivory);
+ }
  if(ending)phoneReply();
 }
 function phoneReply(){
@@ -149,15 +210,23 @@ function rewind(t){
 }
 function remoteClose(t){
  apartment(t,{panic:t>26,close:true});
- push();translate(385,588);rotate(.12);
- poly(noodle([113,149],[12,28],12,63,37),C.skin,4);remote(0,0,1.25);pop();
+ // Close two-shot: the remote sits in Rae's raised hand, not a detached foreground fist.
+ remote(419,564,.86);
+ if(t>27){line([[396,502],[405,488]],3,C.gold);line([[408,502],[421,489]],3,C.gold)}
 }
 function vanish(t){
- bg(C.shade);r(36,207,470,550,21,C.ink,6);r(47,221,446,518,14,C.screen,2);
- txt('UNDO PURCHASE',270,315,28,C.ivory);txt('REMOTE / TODAY',270,365,19,C.ivory);
- const z=ease((t-31.7)/1.7);
- remote(270,546,2.05,z);
- if(z>.04){o(268,548,87*z,76*z,C.teal,2);o(268,548,57*z,47*z,C.ivory,2)}
+ apartment(t,{panic:t>32.5,close:true});
+ const z=ease((t-31.3)/2.8);
+ // The object disappears from the character's existing hand, preserving contact.
+ remote(418,557,.94,z);
+ if(t>29.2 && t<35.3){
+   r(215,118,267,91,12,C.screen,5);
+   txt('UNDO PURCHASE',349,151,16,C.ivory);
+   txt(z>.6?'REVERSED':'REMOTE / TODAY',349,180,15,z>.6?C.teal:C.gold);
+ }
+ if(z>.12 && z<.95){
+   o(418,557,15+z*40,18+z*43,C.teal,3);
+ }
 }
 function shot(t){
  return t<2.2?0:t<6.2?1:t<8?2:t<15?3:t<22.5?4:t<29.2?5:t<35.3?6:t<40.4?7:8;
@@ -191,7 +260,7 @@ window.render=t=>{
   case 5:remoteClose(t);break;
   case 6:vanish(t);break;
   case 7:deskMacro(t,true);break;
-  case 8:apartment(t,{panic:true,close:true});break;
+  case 8:apartment(t,{panic:false,close:true});break;
  }
  captions(t);watermark();
 };
