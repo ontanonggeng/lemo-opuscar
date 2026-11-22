@@ -24,3 +24,16 @@ An original 44-second vertical US-English animated sci-fi sitcom Short, created 
 Use the GitHub Actions workflow [blackstar-undo-render.yml](../../.github/workflows/blackstar-undo-render.yml) for cloud rendering and artifact delivery.
 
 **Status:** Audio and media checks are automated. Artistic and speech verification must be completed on the final actual MP4 before public release.
+
+## Latest rendered candidate
+
+GitHub Actions [run #45014841874](https://github.com/ontanonggeng/lemo-opuscar/actions/runs/45014841874) completed successfully using offline Kokoro and the approved BLACKSTAR v5 kit.
+
+- 44.000 seconds / 1,056 frames / 1080×1920 / 24fps.
+- H.264 video plus AAC mono 48kHz audio.
+- Ten timed Kokoro lines and ten SRT cues.
+- Full decode succeeded; no black-frame interval detected by FFmpeg.
+- Visual contact-sheet inspection confirmed corrected occlusion defects from the earlier candidates.
+- Artistically **not approved for publication**: character performance remains limited compared with the desired higher-quality BLACKSTAR animation benchmark. Independent transcription/listening confirmation of every Kokoro word was not completed.
+
+Use the run's downloadable artifact to review the actual MP4. The branch is intentionally unmerged and the PR remains a draft.
