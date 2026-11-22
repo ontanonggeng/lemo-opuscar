@@ -8,8 +8,8 @@
 |---|---|---|
 | 0.0–2.2s | Coffee tips over a keyboard. Ellis hits UNDO. Liquid pulls back into the mug in a physically coherent reverse motion. No title card. | — |
 | 2.2–6.2s | Ellis watches the perfectly full mug, then Pact's quiet indicator. Facial reaction followed by an unhurried reply. | **ELLIS:** “Okay. That's useful.” **PACT:** “It undoes mistakes.” |
-| 6.2–9.2s | Phone shows an embarrassing sent message addressed to Boss: LOVE YOU. Ellis raises the remote. | **ELLIS:** “Even that text to my boss?” |
-| 9.2–15.0s | UNDO tapped. Phone shows MESSAGE UNSENT; a workplace card changes to APPLICATION REVOKED. Ellis freezes. The first clear payoff is fully visible before 15 seconds. | **PACT:** “Text removed. Job application removed, too.” **ELLIS:** “What?” |
+| 6.2–8.0s | Phone shows an embarrassing sent message addressed to Boss: LOVE YOU. Ellis raises the remote. | **ELLIS:** “Even that text to my boss?” |
+| 8.0–15.0s | UNDO tapped. Phone shows MESSAGE UNSENT; a workplace card changes to APPLICATION REVOKED. Ellis freezes. The first clear payoff is fully visible before 15 seconds. | **PACT:** “Text removed. Job application removed, too.” **ELLIS:** “What?” |
 | 15.0–22.5s | Ellis slaps UNDO again. Jump cut: blinds close, clock rewinds, his clothing changes to pajamas, and an alarm goes off. Show the transformation as deliberate stepping on twos. | **ELLIS:** “Undo that!” **PACT:** “Good morning. Again.” |
 | 22.5–29.2s | He stares at the remote. The cup hovers on the edge. Annoyed, Ellis addresses the remote itself. | **ELLIS:** “Undo the dumbest decision I made today.” |
 | 29.2–35.3s | Remote screen selects PURCHASE: UNDO REMOTE. The object disappears. Pact's indicator stays on (Pact is a separate smart-home system). | **PACT:** “Your purchase of the remote has been reversed.” |
