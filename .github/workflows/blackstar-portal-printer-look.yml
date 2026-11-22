@@ -5,7 +5,10 @@ on:
     branches:
       - blackstar/short-portal-printer
     paths:
-      - 'films/portal-printer/**'
+      - 'films/portal-printer/index.html'
+      - 'films/portal-printer/cast.js'
+      - 'films/portal-printer/world.js'
+      - 'films/portal-printer/main.js'
       - '.github/workflows/blackstar-portal-printer-look.yml'
   workflow_dispatch:
 
