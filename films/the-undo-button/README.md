@@ -1,17 +1,26 @@
 # BLACKSTAR — The Undo Button
 
-**Status: story package prepared; animation and voiced master NOT YET RENDERED.**
+An original 44-second vertical US-English animated sci-fi sitcom Short, created by code in Lemo-Opuscar's Sci-Fi Sitcom Toon style.
 
-This branch was started as a new, original vertical BLACKSTAR Short in the `scifi-toon` aesthetic. The definitive requirements are in [PRODUCTION_BRIEF.md](./PRODUCTION_BRIEF.md), with a three-option treatment, screenplay, and machine-readable shot plan.
+**Cast:** Rae and LOOP (new BLACKSTAR characters). **Speech engine:** offline Kokoro; no ElevenLabs dependency. **Brand:** approved BLACKSTAR v5. **Publishing:** disabled.
 
-## Files
-- `PRODUCTION_BRIEF.md`: GitHub-based production assignment and acceptance gates.
-- `TREATMENT.md`: story alternatives, causal rules, performance-derived objectives.
-- `SCREENPLAY.md`: full dialogue, staging, time windows and continuity rules.
-- `SCENES.json`: nine machine-readable shot envelopes over 44.0 seconds.
-- `YOUTUBE_METADATA.md`: proposed title, description and labels.
+## Production files
+- [TREATMENT.md](./TREATMENT.md) — selected story, causal rules and performance objectives.
+- [PRODUCTION_BRIEF.md](./PRODUCTION_BRIEF.md) — current production contract and QA gates.
+- [SCREENPLAY.md](./SCREENPLAY.md) — timed editorial coverage and complete dialogue.
+- [SCENES.json](./SCENES.json) — nine shot windows totaling exactly 44s.
+- [lines.json](./lines.json) — ten original English dialogue lines, Kokoro cast and audio starts.
+- [scene.js](./scene.js) + [index.html](./index.html) — original native vector animation and captions.
+- [assemble.py](./assemble.py) — lossless WAV line placement, sound design and performance envelopes.
+- [build.sh](./build.sh) — voice, picture, mux pipeline.
+- [verify.py](./verify.py) — FFprobe media checks and storyboard contact sheet.
+- [YOUTUBE_METADATA.md](./YOUTUBE_METADATA.md) — metadata proposal, not a publishing request.
 
-## Important dependency
-This repository's checked `main` branch includes BLACKSTAR v5 branding and a previously produced Nix/Doris film, but **does not establish the Episode 01 Ellis/Pact rigs or ElevenLabs voice assignments**. Do not silently borrow Nix/Doris assets or label a replacement voice as canonical. Production should resume by importing approved Ellis/Pact resources and then implementing and rendering native `scifi-toon` animation.
+## Reproduction
+`sh plugin/skills/lemo-opuscar/scripts/setup.sh deps voice`
+`python brand/blackstar/bootstrap.py`
+`sh films/the-undo-button/build.sh`
 
-No YouTube publishing or scheduling is authorized. 
+Use the GitHub Actions workflow [blackstar-undo-render.yml](../../.github/workflows/blackstar-undo-render.yml) for cloud rendering and artifact delivery.
+
+**Status:** Audio and media checks are automated. Artistic and speech verification must be completed on the final actual MP4 before public release.
