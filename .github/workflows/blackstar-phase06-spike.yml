@@ -63,3 +63,21 @@ jobs:
             films/blackstar-render-spike/out/*-determinism.json
           if-no-files-found: warn
           retention-days: 7
+
+      - name: Emit actual stills for visual inspection
+        if: success()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import pathlib, hashlib, base64
+          root=pathlib.Path("films/blackstar-render-spike/out")
+          for aspect in ("portrait","landscape"):
+              for t in ("0","2.5","4","5.5"):
+                  data=(root/(aspect+"-stills")/("t_"+t+".jpg")).read_bytes()
+                  name=aspect+"-"+t
+                  assert data.startswith(b"\xff\xd8")
+                  print("FRAME_META "+name+" "+str(len(data))+" "+hashlib.sha256(data).hexdigest())
+                  encoded=base64.b64encode(data).decode("ascii")
+                  for i in range(0,len(encoded),2048):
+                      print("FRAME_CHUNK "+name+" "+str(i//2048)+" "+encoded[i:i+2048])
+          PY

@@ -21,3 +21,9 @@ Run 44986879493 failed on the first portrait decoded-JPEG comparison. The scene 
 
 ## Second regression (run 44987115587)
 All four decoded JPEG comparisons passed after explicitly clearing the framebuffer. Raw Canvas RGBA comparisons failed (same page 2/4, new browser 0/4). The next revision requests an opaque, sRGB, readback-oriented Canvas 2D context before calling the native toon initializer, so the same policy applies to stills, video, and diagnostic readback. This is a targeted hypothesis about adaptive rasterization, not a confirmed root cause. Both exact comparisons remain mandatory. Context attributes are logged for diagnosis.
+
+## Revision 3 visual disposition — REJECT
+Eight original stills were retrieved and inspected from evidence run 44987749093 (artifact 14740735756, run 44987343061). Mara floated above the floor in portrait; character shapes, straight-strip shading, grip articulation, environmental depth and reaction acting were rudimentary. No full POC authorization follows from the technical pass.
+
+## Revision 4 corrective design
+Both characters have explicit walkable-floor anchors, unoutlined contact shadows, new distinct head and clothing profiles, two-bone arm solving and shared wrist/prop positioning, localized clipped cel shadows, separate portrait/landscape blocking, projected floor tiles, equipment/cabinet depth and less static body reactions. The v5 watermark bytes and strict deterministic Canvas policy are preserved. The revision is unapproved until new frames are inspected. No claim of final character model approval or motion QA.
