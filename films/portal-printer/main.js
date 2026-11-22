@@ -170,9 +170,9 @@ function S9(t){
  cam(540,1010,lerp(.94,1.01,ss(seg(t,32.5,38.5))));
  warehouse(t);printer(540,910,.98,{screen:t<34.1?'LABEL LOCKED':t<36.4?'ROUTING...':'DELIVERED',t});
  if(op>0)portal(540,575,260,t,{open:op,kind:'office'});
- parcel(540,by,bs);
- marn(M(t,{gesture:t<33.7?.7:.15,hold:t<33.45?'label':null,look:[-.7,-.12],lid:.55}));
- kip(K(t,{panic:lerp(.35,.65,suck),gesture:.35,look:[.75,-.1],lid:.12}));
+ parcel(540,by,bs,{label:t>=33.38?'OHIO':''});
+ marn(M(t,{gesture:t<33.7?.7:.15,hold:t<33.38?'label':null,look:[-.7,-.12],lid:.55}));
+ kip(K(t,{panic:lerp(.35,1.0,suck),gesture:.18+suck*.82,look:[.75,-.1],lid:lerp(.12,.02,suck)}));
  if(scan>0&&scan<1)stroke([[420,1090-scan*170],[660,1090-scan*170]],6,{line:'#e8c45e',boil:.3});
 }
 // 38.5–44: return label, cold pause, box blast-back and final line.
@@ -182,9 +182,10 @@ function S10(t){
  cam(540,1010,lerp(.98,1.035,ss(seg(t,38.5,44))));
  warehouse(t);printer(540,910,.98,{screen:t<39.8?'DELIVERED':'RETURN',paper,paperText:'RETURN',shake:t>40.1&&t<40.7?4:0,t});
  if(op>0)portal(540,575,255,t,{open:op,kind:'office'});
- if(t>40.12)parcel(540,boxY,boxS,{damage:fly>.65?1:0,slime:fly>.75?1:0});
+ if(t>40.12)parcel(540,boxY,boxS,{damage:fly>.65?1:0,slime:fly>.75?1:0,label:fly>.55?'RETURN':''});
  marn(M(t,{lid:.62,look:[-.65,-.08],brow:-.28,mouth:{...M(t).mouth,sm:-.28}}));
- kip(K(t,{panic:t>40.6?.9:.35,lid:t>40.6?.03:.18,look:[.72,-.1],gesture:t>40.6?.7:.15}));
+ const recoil=ss(seg(t,40.42,40.92));
+ kip(K(t,{panic:lerp(.35,1.15,recoil),lid:lerp(.18,0,recoil),look:[.72,-.1],gesture:.15+recoil*.85}));
  if(t>42.65)sluglet(625,1065,.42,t,{ice:0});
 }
 function renderFilm(t){
