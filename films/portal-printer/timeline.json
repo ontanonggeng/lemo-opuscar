@@ -1,0 +1,182 @@
+{
+  "duration": 44,
+  "fps": 24,
+  "anim_fps": 12,
+  "shots": [
+    {
+      "id": "S01",
+      "start": 0,
+      "end": 2.2,
+      "name": "hook"
+    },
+    {
+      "id": "S02",
+      "start": 2.2,
+      "end": 6.2,
+      "name": "two"
+    },
+    {
+      "id": "S03",
+      "start": 6.2,
+      "end": 10.5,
+      "name": "frost"
+    },
+    {
+      "id": "S04",
+      "start": 10.5,
+      "end": 13.4,
+      "name": "react"
+    },
+    {
+      "id": "S05",
+      "start": 13.4,
+      "end": 18,
+      "name": "jelly"
+    },
+    {
+      "id": "S06",
+      "start": 18,
+      "end": 21,
+      "name": "normalPrinter"
+    },
+    {
+      "id": "S07",
+      "start": 21,
+      "end": 27,
+      "name": "montage"
+    },
+    {
+      "id": "S08",
+      "start": 27,
+      "end": 32.5,
+      "name": "local"
+    },
+    {
+      "id": "S09",
+      "start": 32.5,
+      "end": 38.5,
+      "name": "deliver"
+    },
+    {
+      "id": "S10",
+      "start": 38.5,
+      "end": 44,
+      "name": "return"
+    }
+  ],
+  "events": [
+    {
+      "t": 0.05,
+      "type": "portal_open"
+    },
+    {
+      "t": 0.62,
+      "type": "slug_drop"
+    },
+    {
+      "t": 6.3,
+      "type": "button"
+    },
+    {
+      "t": 7,
+      "type": "portal_open"
+    },
+    {
+      "t": 9.15,
+      "type": "printer"
+    },
+    {
+      "t": 13.55,
+      "type": "portal_open"
+    },
+    {
+      "t": 15.3,
+      "type": "squish"
+    },
+    {
+      "t": 21.15,
+      "type": "buzz"
+    },
+    {
+      "t": 22.95,
+      "type": "buzz"
+    },
+    {
+      "t": 24.75,
+      "type": "buzz"
+    },
+    {
+      "t": 27.15,
+      "type": "button"
+    },
+    {
+      "t": 29.25,
+      "type": "printer"
+    },
+    {
+      "t": 32.75,
+      "type": "label_peel"
+    },
+    {
+      "t": 34,
+      "type": "scan"
+    },
+    {
+      "t": 34.25,
+      "type": "portal_open"
+    },
+    {
+      "t": 35.2,
+      "type": "suction"
+    },
+    {
+      "t": 38.9,
+      "type": "printer"
+    },
+    {
+      "t": 40.15,
+      "type": "portal_open"
+    },
+    {
+      "t": 40.55,
+      "type": "box_hit"
+    }
+  ],
+  "music": [
+    {
+      "start": 2.2,
+      "end": 6.2,
+      "kind": "warehouse"
+    },
+    {
+      "start": 6.2,
+      "end": 10.5,
+      "kind": "frost"
+    },
+    {
+      "start": 13.4,
+      "end": 18,
+      "kind": "jelly"
+    },
+    {
+      "start": 18,
+      "end": 21,
+      "kind": "warehouse"
+    },
+    {
+      "start": 21,
+      "end": 27,
+      "kind": "montage"
+    },
+    {
+      "start": 32.5,
+      "end": 38.5,
+      "kind": "theme"
+    },
+    {
+      "start": 42.65,
+      "end": 44,
+      "kind": "sting"
+    }
+  ]
+}
